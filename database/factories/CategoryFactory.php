@@ -21,7 +21,7 @@ class CategoryFactory extends Factory
 
         $user = User::inRandomOrder()->first() ;
         return [
-            "title" => fake()->titleMale(),
+            "title" => fake()->name(),
             "color" => fake()->hexColor(),
             "description" => fake()->text(),
             "user_id" => $user->id

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
+use App\Models\User;
+use Illuminate\Container\Attributes\Auth;
 
 class TaskController extends Controller
 {
@@ -13,7 +15,12 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        // $user = Auth::user();
+        // $tasks = Task::where('user_id' , $user->id)->get() ;
+        
+        $user = User::find(2);
+        $tasks = Task::query()->orderBy('id')->get() ;
+        return view('tasks.tasks.index' , compact('user' , 'tasks')) ;
     }
 
     /**
@@ -21,7 +28,9 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        $user = User::with('categories')->find(1) ;
+        $categories = $user->categories ;
+        return view('tasks.tasks.create' , compact('user' , 'categories') ) ;
     }
 
     /**
@@ -29,7 +38,10 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
+        $data  = $request->validated() ;
+        $data['user_id'] = 1 ;
+        $task = Task::create($data) ;
+        return $this->show($task) ;
     }
 
     /**
@@ -37,7 +49,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return view('tasks.tasks.show' , compact('task')) ;
     }
 
     /**
@@ -45,7 +57,9 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $user = User::with('categories')->find(1) ;
+        $categories = $user->categories ;
+        return view('tasks.tasks.edit' , compact('task' , 'categories')) ;
     }
 
     /**
@@ -53,7 +67,11 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+
+        $newTask = $request->validated() ;
+        $task->update($newTask) ;
+        $task->save() ;
+        return view('tasks.tasks.show' , compact('task')) ;
     }
 
     /**
@@ -61,6 +79,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete() ;
+        return $this->index() ;
+
     }
 }

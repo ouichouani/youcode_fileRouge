@@ -12,7 +12,7 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true ;
     }
 
     /**
@@ -23,7 +23,19 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'sometimes|string|min:1',
+            'description' => 'sometimes|string|min:3',
+            'difficulty' => 'sometimes|in:xxs,xs,s,m,l,xl,xxl',
+            'priority' => 'sometimes|in:xxs,xs,s,m,l,xl,xxl',
+            'deadline' => 'sometimes|nullable|date',
+            'done' => 'sometimes|boolean',
+            'streaks' => 'sometimes|integer|min:0',
+
+            'frequency' => 'sometimes|array',
+            'frequency.*' => 'in:OneTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+
+            'category_id' => 'sometimes|integer|min:1|exists:categories,id',
+
         ];
     }
 }
