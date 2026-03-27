@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskRequest extends FormRequest
+class UpdateHabitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +27,12 @@ class UpdateTaskRequest extends FormRequest
             'description' => 'sometimes|string|min:3',
             'difficulty' => 'sometimes|in:xxs,xs,s,m,l,xl,xxl',
             'priority' => 'sometimes|in:xxs,xs,s,m,l,xl,xxl',
-            'deadline' => 'sometimes|nullable|date',
             'done' => 'sometimes|boolean',
+            'streaks' => 'sometimes|integer|min:0',
+
+            'frequency' => 'sometimes|array',
+            'frequency.*' => 'in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+
             'category_id' => 'nullable|integer|min:1|exists:categories,id',
 
         ];

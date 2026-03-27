@@ -13,23 +13,49 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     // Authentication methods
+    public function showRegisterForm()
+    {
+        return view('users.user.register');
+    }
+
     public function showLoginForm()
     {
-        return view('user.login');
+        return view('users.user.login');
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
         if (!Auth::attempt($credentials)) {
-            return redirect()->route('login')->with('error' , 'The provided credentials do not match our records');
+            return redirect()->route('login')->with('error', 'The provided credentials do not match our records');
         }
+
+        $request->session()->regenerate();
+
+        return redirect('/dashboard')->with('success', 'You are now logged in.');
+    }
+
+    public function register(StoreUserRequest $request)
+    {
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
+
+        $user = User::create($data);
+        Auth::login($user);
+
+        return redirect()->route('dashboard')->with('success', 'Account created successfully.');
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 
@@ -54,18 +80,19 @@ class UserController extends Controller
         return redirect()->route("users.show", $user->id)->with('success', 'User created successfully.');
     }
 
-    public function show(?int $id=null)
+    public function show(?int $id = null)
     {
+        $user = Auth::user();
 
-        $user = Auth::user() ;
-
-        if($id) $user = User::findOrFail($id);
+        if ($id) {
+            $user = User::findOrFail($id);
+        }
 
         if ($user) {
             return view('users.show', compact('user'));
-        } else {
-            return redirect()->back()->with('error' , 'user not found');
         }
+
+        return redirect()->back()->with('error', 'user not found');
     }
 
     public function edit($id)
@@ -76,11 +103,11 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, $id)
     {
-
         try {
-
             $user = User::find($id);
-            if (!$user) throw new Exception("user not found");
+            if (!$user) {
+                throw new Exception('user not found');
+            }
 
             $data = $request->validated();
 
@@ -102,14 +129,11 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if(!$user){
-            return redirect()->back()->with('error' , 'user not found') ;
+        if (!$user) {
+            return redirect()->back()->with('error', 'user not found');
         }
 
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }
-
-
-// store the image using image model 

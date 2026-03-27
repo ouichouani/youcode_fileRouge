@@ -1,9 +1,10 @@
-<form action="/tasks" method="POST">
+<form action="{{ route('tasks.store') }}" method="POST">
+
     @csrf
 
 
     <input type="text" name = 'title' placeholder="title" required>
-    @error('frequency')
+    @error('title')
         <div style="color:red;">{{ $message }}</div>
     @enderror
 
@@ -49,29 +50,18 @@
     @enderror
     <br>
 
+    @if (empty($categories)) 
+        <p> no category created to select from </p>
 
-    <section>
-        <label><input type="checkbox" name="frequency[]" value="OneTime"> OneTime</label>
-        <label><input type="checkbox" name="frequency[]" value="Monday"> Monday</label>
-        <label><input type="checkbox" name="frequency[]" value="Tuesday"> Tuesday</label>
-        <label><input type="checkbox" name="frequency[]" value="Wednesday"> Wednesday</label>
-        <label><input type="checkbox" name="frequency[]" value="Thursday"> Thursday</label>
-        <label><input type="checkbox" name="frequency[]" value="Friday"> Friday</label>
-        <label><input type="checkbox" name="frequency[]" value="Saturday"> Saturday</label>
-        <label><input type="checkbox" name="frequency[]" value="Sunday"> Sunday</label>
-    </section>
-    @error('frequency')
-        <div style="color:red;">{{ $message }}</div>
-    @enderror
-    <br>
+    @else
+        <select name = 'category_id'>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}">
+                    {{ $category->title }}</option>
+            @endforeach
+        </select>
+    @endif
 
-
-    <select name = 'category_id' required>
-        @foreach ($categories as $category)
-            <option value="{{ $category->id }}">{{ $category->title }}</option>
-            {{-- <p> - </p> --}}
-        @endforeach
-    </select>
     @error('category_id')
         <div style="color:red;">{{ $message }}</div>
     @enderror

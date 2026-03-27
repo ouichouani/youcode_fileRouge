@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('priority' , [ "xxs" , "xs" , "s" , "m" , "l" , "xl" , "xxl"])->default('m');
             $table->timestamp("deadline")->nullable();
             $table->boolean('done')->default(false) ;
+            $table->boolean('is_task')->default(false) ;
 
 
             // combine tasks and habites in one table 'tasks'

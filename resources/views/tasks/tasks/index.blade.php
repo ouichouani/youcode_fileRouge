@@ -1,7 +1,6 @@
 
 
-
-@foreach ($tasks as $task )
+@forelse ($tasks as $task )
 <div style="max-width: 700px; margin: 30px auto; font-family: Arial, sans-serif;">
     <h1>Task Details</h1>
 
@@ -36,4 +35,8 @@
     </div>
 </div>
 <p>--------------------------------------------------</p>
-@endforeach
+@empty
+
+<p>no tasks created yet</p>
+
+@endforelse

@@ -10,11 +10,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user = User::find(1)->load([
+
+        $user = Auth::user() ;
+
+        $user->load([
             'habits.category',
             'tasks.category'
         ]);
-        
+
         $habits = $user?->habits;
         $tasks = $user?->tasks;
 

@@ -28,11 +28,7 @@ class StoreTaskRequest extends FormRequest
             'difficulty' => 'required|in:xxs,xs,s,m,l,xl,xxl',
             'priority' => 'required|in:xxs,xs,s,m,l,xl,xxl',
             'deadline' => 'required|date',
-
-            'frequency' => 'required|array',
-            'frequency.*' => 'in:OneTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
-
-            'category_id' => 'required|integer|min:1|exists:categories,id',
+            'category_id' => 'nullable|integer|min:1|exists:categories,id',
         ];
     }
 }

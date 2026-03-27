@@ -32,5 +32,12 @@
         <p><strong>User ID:</strong> {{ $task->user_id }}</p>
         <p><strong>Created At:</strong> {{ $task->created_at?->format('Y-m-d H:i') }}</p>
         <p><strong>Updated At:</strong> {{ $task->updated_at?->format('Y-m-d H:i') }}</p>
+
+        <a href='{{ route('tasks.edit' , $task->id) }}'>update</a>
+        <form action='{{ route('tasks.destroy' , $task->id) }}' method='post'>
+            @method('DELETE')
+            @csrf
+            <button>delete</button>
+        </form>
     </div>
 </div>
