@@ -1,0 +1,16 @@
+@foreach ($posts as $post)
+    <div style="border: 1px solid red ; padding: 10px ; ">
+        <a href="{{ route('users.show' , $post->user->id) }}"><h1>{{ $post->user->name }}</h1></a>
+        <p>{{ $post->content }}</p>
+        <p>{{ $post->type }}</p>
+        <p>{{count($post->likes)}}</p>
+        <p>------comments--------</p>
+        @forelse ( $post->comments as $comment )
+            <pre>   - {{$comment->content}}</pre>
+            <pre>           - {{$comment->created_at->diffForHumans()}}</pre>
+        @empty
+            <p>no comments ...</p>
+        @endforelse
+    </div>
+    <br>
+@endforeach

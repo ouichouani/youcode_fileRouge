@@ -13,14 +13,10 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     // Authentication methods
-    public function showRegisterForm()
-    {
-        return view('users.user.register');
-    }
 
     public function showLoginForm()
     {
-        return view('users.user.login');
+        return view('users.users.login');
     }
 
     public function login(Request $request)
@@ -60,15 +56,16 @@ class UserController extends Controller
     }
 
     // CRUD methods
-    public function index()
-    {
-        $users = User::all();
-        return view('users.index', compact('users'));
-    }
+
+    // public function index()
+    // {
+    //     $users = User::all();
+    //     return view('users.users.index', compact('users'));
+    // }
 
     public function create()
     {
-        return view('users.create');
+        return view('users.users.register');
     }
 
     public function store(StoreUserRequest $request)
@@ -77,22 +74,28 @@ class UserController extends Controller
         $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
-        return redirect()->route("users.show", $user->id)->with('success', 'User created successfully.');
+        return redirect()->route("users.users.show", $user->id)->with('success', 'User created successfully.');
     }
 
     public function show(?int $id = null)
     {
-        $user = Auth::user();
+        $user = null;
+        $posts = null;
+        $comments = null;
 
         if ($id) {
             $user = User::findOrFail($id);
+
+        } else {
+
+            $user = Auth::user();
+            if (!$user) return redirect()->route('login')->with('error', 'Please login to view your profile');
+            $user->load('posts.comments', 'posts.likes', 'posts.images:path', 'image:path');
         }
 
-        if ($user) {
-            return view('users.show', compact('user'));
-        }
+        $posts = $user?->posts ;
+        return view('users.users.show', compact('user', 'posts'));
 
-        return redirect()->back()->with('error', 'user not found');
     }
 
     public function edit($id)
@@ -119,7 +122,7 @@ class UserController extends Controller
 
             $user->update($data);
 
-            return redirect()->route('users.show', $user->id)->with('success', 'User updated successfully.');
+            return redirect()->route('users.users.show', $user->id)->with('success', 'User updated successfully.');
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -134,6 +137,6 @@ class UserController extends Controller
         }
 
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('users.users.index')->with('success', 'User deleted successfully.');
     }
 }

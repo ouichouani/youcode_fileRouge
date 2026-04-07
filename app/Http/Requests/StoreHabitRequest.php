@@ -34,4 +34,9 @@ class StoreHabitRequest extends FormRequest
             'category_id' => 'nullable|integer|min:1|exists:categories,id',
         ];
     }
+
+    public function failedAuthorization()
+    {
+        abort(403, 'Unauthorized');
+    }
 }

@@ -62,7 +62,7 @@
     <select name = 'category_id'>
         <option value=""> no category </option>
         @forelse ($categories as $category)
-            <option value="{{ $category->id }}" @if ($category->id == $habit?->category_id) selected @endif>
+            <option value="{{ $category->id }}">
                 {{ $category->title }}</option>
         @empty
             <option value=""> no category created </option>

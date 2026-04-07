@@ -21,8 +21,8 @@ class PostFactory extends Factory
         $user = User::inRandomOrder()->first();
         return [
             'content' => fake()->sentence(5),
-            'type' => fake()->randomElement(["Question", "History", "Encouragement"]),
-            'visibility' => true,
+            'type' => fake()->randomElement(["Question", "History", "Encouragement"]), //"Question", "History", "Encouragement"
+            'visibility' => fake()->randomElement(["public", "private", "friends"]), // "public", "private", "friends"
             'user_id' => $user->id 
         ];
     }

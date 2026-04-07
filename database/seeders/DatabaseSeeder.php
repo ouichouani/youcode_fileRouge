@@ -23,13 +23,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(20)->create();
-        Category::factory(20)->create();
+        // Category::factory(20)->create();
         // Task::factory(100)->create();
         // Post::factory(100)->create();
         // Like::factory(200)->create();
-        Comment::factory(200)->create();
-        Report::factory(5)->create();
-        FriendRequest::factory(50)->create();
+        // Comment::factory(200)->create();
+        // Report::factory(5)->create();
+        // FriendRequest::factory(50)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',

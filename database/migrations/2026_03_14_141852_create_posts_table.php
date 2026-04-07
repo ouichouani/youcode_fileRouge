@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->text('content')->nullable();
-            $table->enum('type', ["Question", "History", "Encouragement"])->default("histoire");
-            $table->boolean('visibility')->default(true);
-
+            $table->enum('type', ["Question", "History", "Encouragement"])->default("History");
+            $table->enum('visibility' , ["public", "private", "friends"])->default("public");
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });

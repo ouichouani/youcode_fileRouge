@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCommentRequest extends FormRequest
+class StorePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,11 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => 'required|string|max:1000' ,
-            'post_id' => 'required|exists:posts,id' ,
+            'content' => 'nullable|string|max:500|required_without:images',
+            'type' => 'required|in:Question,History,Encouragement',
+            'visibility' => 'required|in:public,private,friends',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048|required_without:content',
         ];
     }
 }
