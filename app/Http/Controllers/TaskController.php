@@ -41,7 +41,7 @@ class TaskController extends Controller
     
     public function show(Task $task)
     {
-        if(!in_array('OneTime' , $task->frequency) ) return redirect()->route('tasks.index')->with('message' ,'resource not found') ;
+        if(!$task->is_task) return redirect()->route('tasks.index')->with('message' ,'resource not found') ;
         return view('tasks.tasks.show' , compact('task')) ;
     }
 

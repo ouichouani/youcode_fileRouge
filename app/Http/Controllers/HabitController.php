@@ -39,7 +39,7 @@ class HabitController extends Controller
 
     public function show(Task $habit)
     {
-        if(in_array('OneTime' , $habit->frequency)) return redirect()->route('habits.index')->with('message' ,'resource not found') ;
+        if($habit->is_task) return redirect()->route('habits.index')->with('message' ,'resource not found') ;
         return view('tasks.habits.show', compact('habit'));
     }
 

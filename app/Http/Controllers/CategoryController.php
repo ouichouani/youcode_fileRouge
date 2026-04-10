@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Auth;
 class CategoryController extends Controller
 {
 
-    public function index()
-    {
-        // maybe i could show all categories with there tasks and habits 
-    }
-
     public function create()
     {
         return view('tasks.categories.create');
@@ -22,41 +17,49 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $request)
     {
-        $data = $request->validated() ;
-        $data['user_id'] = Auth::id() ;
-        $category = Category::create($data) ;
-        return redirect()->route('categories.show' , $category) ;
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+        $category = Category::create($data);
+        return redirect()->route('categories.show', $category);
     }
 
-    
+
     public function show(Category $category)
     {
-        // show cat with there tasks and habits hhh
-        $category->load('habits' , 'tasks' );
-        $habits = $category->habits ;
-        $tasks = $category->tasks ;
-        return view('tasks.categories.show' , compact('category' , 'habits' , 'tasks'));
+        $category->load([
+            'habits' => function ($query) {
+                $query->where('user_id', Auth::id());
+            },
+            'tasks' => function ($query) {
+                $query->where('user_id', Auth::id());
+            }
+        ]);
+
+        $habits = $category->habits;
+        $tasks = $category->tasks;
+        
+        return view('tasks.categories.show', compact('category', 'habits', 'tasks'));
     }
 
 
     public function edit(Category $category)
     {
-        return view('tasks.categories.edit' , compact('category')) ;
+        return view('tasks.categories.edit', compact('category'));
     }
 
 
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $data = $request->validated() ;
-        $category->update($data) ;
-        $category->save() ;
-        return redirect()->route('categories.show' , $category) ;
+        $data = $request->validated();
+        $category->update($data);
+        $category->save();
+        return redirect()->route('categories.show', $category);
     }
 
 
     public function destroy(Category $category)
     {
-        $category->delete() ;
-        return redirect()->route('categorie.index') ;
+        $category->delete();
+        return redirect()->route('categorie.index');
     }
 }

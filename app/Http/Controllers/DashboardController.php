@@ -15,8 +15,14 @@ class DashboardController extends Controller
 
         $user->load([
             'habits.category',
-            'tasks.category'
+            'habits.logs' => function ($query) {
+                $query->whereMonth('completed_date', now()->month)->whereYear('completed_date', now()->year);
+            },
+            'tasks.category' , 
+
         ]);
+
+        
 
         $habits = $user?->habits;
         $tasks = $user?->tasks;

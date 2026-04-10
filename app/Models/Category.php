@@ -17,11 +17,11 @@ class Category extends Model
     }
 
     public function tasks(){
-        return $this->hasMany(Task::class)->whereJsonContains('frequency' , 'OneTime' )  ;
+        return $this->hasMany(Task::class)->where('is_task' , true) ; ;
     }
 
     public function habits(){
-        return $this->hasMany(Task::class)->whereJsonDoesntContain('frequency','OneTime' ) ;
+        return $this->hasMany(Task::class)->where('is_task' , false) ;
     }
 
 

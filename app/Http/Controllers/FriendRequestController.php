@@ -3,64 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFriendRequestRequest;
-use App\Http\Requests\UpdateFriendRequestRequest;
 use App\Models\FriendRequest;
+use Illuminate\Support\Facades\Auth;
 
 class FriendRequestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-        //
+        $friendRequests = FriendRequest::Where('receiver_id', Auth::id())->with(['sender:id,name' , 'sender.image.path'])->get();
+        return view('users.requests.index', compact('friendRequests'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreFriendRequestRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['sender_id'] = Auth::id();
+        FriendRequest::create($data);
+
+        return redirect()->back()->with('success', 'Friend request sent successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(FriendRequest $friendRequest)
+
+    public function accept(FriendRequest $friendRequest)
     {
-        //
+        $friendRequest->update(['status' => 'accepted']);
+        return redirect()->back()->with('success', 'Friend request accepted successfully.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(FriendRequest $friendRequest)
+    public function reject(FriendRequest $friendRequest)
     {
-        //
+        $friendRequest->update(['status' => 'rejected']);
+        return redirect()->back()->with('success', 'Friend request rejected successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateFriendRequestRequest $request, FriendRequest $friendRequest)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(FriendRequest $friendRequest)
+    public function destroy(FriendRequest $request)
     {
-        //
+        $request->delete();
+        return redirect()->back()->with('success', 'Friend request deleted successfully.');
     }
 }
