@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorelogRequest;
-use App\Http\Requests\UpdatelogRequest;
 use App\Models\Log;
-use App\Models\Task;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LogController extends Controller
@@ -34,7 +31,6 @@ class LogController extends Controller
 
         $data = $request->validated();
         $data['user_id'] = Auth::id();
-        $data['done'] = true;
         $data['completed_date'] = now()->toDateString();
         $log = Log::create($data);
         return redirect()->back()->with('message', 'log created successfully');
