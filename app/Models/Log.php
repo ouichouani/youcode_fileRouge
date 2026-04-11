@@ -11,13 +11,17 @@ class Log extends Model
     use HasFactory;
 
     
-    protected $fillable = ['user_id' , 'task_id', 'completed_date', 'done', 'notes'];
+    protected $fillable = ['task_id', 'completed_date', 'notes'];
     
     
     protected $casts = [
         'completed_date' => 'datetime',
-        'done' => 'boolean',
     ];
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 
 }
 
