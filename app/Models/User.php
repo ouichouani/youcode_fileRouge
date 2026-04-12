@@ -86,6 +86,12 @@ class User extends Authenticatable
         return $this->hasMany(FriendRequest::class, 'receiver_id');
     }
 
+    public function is_frend_with(User $user): bool
+    {
+        return $this->sentRequests()->where('receiver_id', $user->id)->where('status', 'accepted')->exists() ||
+               $this->receivedRequests()->where('sender_id', $user->id)->where('status', 'accepted')->exists();
+    }
+
     // used in factories
 
     public function reports(){

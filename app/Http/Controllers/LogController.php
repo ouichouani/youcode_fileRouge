@@ -32,7 +32,6 @@ class LogController extends Controller
 
         // check if the task is already done for today
         $existingLog = Log::where('task_id', $habit->id)
-            ->where('user_id', Auth::id())
             ->where('completed_date', now()->toDateString())
             ->first();
 
