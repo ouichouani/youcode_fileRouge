@@ -25,6 +25,7 @@ return new class extends Migration
                 'scam',
                 'other'
             ])->default('other');
+            $table->boolean('is_confirmed')->default(false);
             $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();

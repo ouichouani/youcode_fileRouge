@@ -4,10 +4,10 @@ namespace App\Policies;
 
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TaskPolicy
 {
+
 
     public function view(User $user, Task $task): bool
     {
@@ -23,6 +23,4 @@ class TaskPolicy
     {
         return $user->id === $task->user_id;
     }
-
-
 }

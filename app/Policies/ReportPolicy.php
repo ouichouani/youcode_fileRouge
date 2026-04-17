@@ -37,4 +37,9 @@ class ReportPolicy
         return false;
     }
 
+    public function confirm(User $user){
+        if($user->role === 'Admin' || $user->role === 'Moderator') return true ;
+        return false ;
+    }
+
 }

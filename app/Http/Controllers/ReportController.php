@@ -5,62 +5,87 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
 use App\Models\Report;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $this->authorize('viewAny', Report::class);
+
+        $reports = Report::query()->with([
+            'user:id,name,email',
+            'post.user:id,name,email',
+            'post.user.image',
+
+            'post.images',
+            'user.image',
+
+            'post.comments.user:id,name,email',
+            'post.comments.user.image',
+
+        ])->latest();
+        
+        if(Auth::user()->role == 'Admin'){
+            $reports = $reports->where('is_confirmed' , true) ;
+        }
+
+        $reports = $reports->get() ;
+        return view('reports.index', compact('reports'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        //
+        return view('reports.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreReportRequest $request)
     {
-        //
+        $report = $request->validated();
+        $report = Report::create($report);
+        return redirect()->back()->with('success', 'Report created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Report $report)
     {
-        //
+        $this->authorize('view', $report);
+
+        $report->load([
+            'user:id,name,email',
+            'post.user:id,name,email',
+            'post.user.image',
+
+            'post.images',
+            'user.image',
+
+            'post.comments.user:id,name,email',
+            'post.comments.user.image',
+
+        ])->latest()->get();
+
+        // dd($report);
+        $post = $report?->post ;
+        $comments = $post?->comments ;
+        $user = $post?->user ;
+
+        return view('reports.show', compact('report' , 'post', 'comments' , 'user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Report $report)
     {
-        //
+        $this->authorize('update', $report);
+        return view('reports.edit', compact('report'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateReportRequest $request, Report $report)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Report $report)
     {
-        //
+        $this->authorize('delete', $report);
+        $report->delete();
+        return redirect()->route('reports.index')->with('success', 'Report deleted successfully.');
     }
 }

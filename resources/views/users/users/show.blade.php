@@ -6,6 +6,11 @@
 <p> - followers : {{ count($sentRequests) }}</p> 
 <p> - followed by : {{ count($receivedRequests) }}</p>  
 
+<form action="{{ route('logout') }}" method="POST">
+    @csrf
+    <button>logout</button>
+</form>
+
 
 @if (isset($pendingRequest) && $pendingRequest?->status == 'pending')
 
@@ -35,8 +40,15 @@
 <p>---------------posts------------</p>
 
 @foreach ( $posts as $p )
+    @can('hide' , $p )
+        <form action="{{ auth()->user()->role === "Admin" ? route('admin.post.hide' , $p->id) : route('admin.post.hide' , $p->id) }}" method='POST'>
+            @csrf
+            <button>hide</button>
+        </form>
+    @endcan
     <p>{{$p->content}}</p>
     <p>likes : {{count($p->likes)}}</p>
+    <p>is hidden : {{$p->is_hidden ? 'true' : 'false'}}</p>
 
     @foreach ($p->comments as $c)
         <p> -- {{ $c->content }}</p>    

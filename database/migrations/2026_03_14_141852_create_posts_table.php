@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->enum('type', ["Question", "History", "Encouragement"])->default("History");
             $table->enum('visibility' , ["public", "private", "friends"])->default("public");
+            $table->boolean('is_hidden')->default(false);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });

@@ -48,12 +48,14 @@ class PostController extends Controller
     }
 
     public function update(UpdatePostRequest $request , Post $post){
+        $this->authorize('update' , $post) ;
         $data = $request->validated() ;
         $post->update($data) ;
         return redirect()->route('posts.show' , $post)->with('message' , 'Post updated successfully') ;
     }
 
     public function destroy(Post $post){
+        $this->authorize('delete' , $post) ;
         $post->delete() ;
         return redirect()->route('posts.index')->with('message' , 'Post deleted successfully') ;
     }

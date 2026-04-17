@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("title");
             $table->string("color")->nullable();
             $table->text("description")->nullable();
+            $table->boolean("is_global")->default(false);
 
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete() ;
             $table->timestamps();

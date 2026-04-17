@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('is_banned')->default(false);
+            $table->boolean('is_banned_by_moderator')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

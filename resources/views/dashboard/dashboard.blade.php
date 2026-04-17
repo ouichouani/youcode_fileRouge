@@ -1,48 +1,32 @@
-<pre>{{ $user }}</pre>
-<pre>{{ $user->habits }}</pre>
-{{-- <pre>{{/$user->habits['category']}}</pre> --}}
+<nav>
+    <a href='{{ route('dashboard') }}'>board</a>
+    <a href='{{ route('habits.index') }}'>habits</a>
+    <a href='{{ route('tasks.index') }}'>tasks</a>
+    <a href='{{ route('logs.index') }}'>historie</a>
+    <a href='{{ route('categories.index') }}'>categories</a>
+</nav>
+<aside>
+    sidebar
+    <br>
+    
+    <a href='{{ route('posts.index') }}'>comunity</a>
+    <br>
+    
+    <a href='{{ route('users.profile') }}'>profile</a>
+    <br>
+    
+    <a href='{{ route('notifications.index') }}'>notification</a>
+    <br>
 
-<h2>tasks</h2>
-
-{{-- {{dd($tasks[1]->category->title)}} --}}
-@forelse ($tasks as $task)
-    <p>{{ $task?->title }}</p>
-    <p>- {{ $task?->category?->title }}</p>
-    <p>-----------------------------</p>
-
-
-@empty
-    <p>there is notasks created yet</p>
-@endforelse
-
-<h2>habits</h2>
-
-@forelse ($habits as $habit)
-    <p>{{ $habit?->title }}</p>
-    <p>{{ $habit?->category?->title }}</p>
-    <p>-----------------------------</p>
-
-@empty
-    <p>there is no habits created yet</p>
-@endforelse
-
-<p>--------------------------- tasks ---------------------------</p>
-
-{{ today() }}
-
-<p>--------------------------- logs ---------------------------</p>
-
-@foreach ($habits as $h)
-    @forelse ($h->logs as $log)
-        <p> - {{ $log->completed_date }}</p>
-    @empty
-        <p>no progress</p>
-    @endforelse
-    <p>--------------</p>
-@endforeach
+    @can('manage_app' , App\Models\User::class)
+        
+    <a href='{{ route('blackList') }}'>manage peapol</a>
+    <br>
+    @endcan
+</aside>
 
 
-<p>--------------------------- logs ---------------------------</p>
+<p>--------------------------- table ---------------------------</p>
 
 <table border=1>
     <thead>
@@ -100,8 +84,7 @@
                             @endif
                         </td>
                     @else
-
-                    <td>.</td>
+                        <td>.</td>
                     @endif
                 @endfor
             </tr>

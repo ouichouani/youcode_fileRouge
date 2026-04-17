@@ -23,7 +23,9 @@ class StoreReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'description' => ['nullable', 'string'],
+            'type' => ['required', 'in:spam,harassment,hate_speech,violence,nudity,misinformation,copyright,scam,other'],
+            'post_id' => ['required', 'exists:posts,id'],
         ];
     }
 }

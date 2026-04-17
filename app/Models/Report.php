@@ -10,7 +10,7 @@ class Report extends Model
     /** @use HasFactory<\Database\Factories\ReportFactory> */
     use HasFactory;
 
-    protected $fillable = ['description' , 'type', 'post_id' , 'user_id'];
+    protected $fillable = ['description' , 'type', 'post_id' , 'user_id' , 'is_confirmed'];
 
 
     public function user(){

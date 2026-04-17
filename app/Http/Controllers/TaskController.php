@@ -12,12 +12,16 @@ class TaskController extends Controller
 {
 
 
-    public function index()
+    public function tasks()
     {
-        $user = Auth::user();
-        $user->load('tasks') ;
-        $tasks = $user->tasks ;
-        return view('tasks.tasks.index' , compact('user' , 'tasks')) ;
+        $tasks = Task::where('is_task' , true)->where('user_id' , Auth::id())->latest()->get() ;
+        return view('tasks.tasks.index' , compact('tasks')) ;
+    }
+
+    public function habits()
+    {
+        $habits = Task::where('is_task' , false)->where('user_id' , Auth::id())->latest()->get() ;
+        return view('tasks.habits.index' , compact('habits')) ;
     }
 
 
@@ -41,6 +45,7 @@ class TaskController extends Controller
     
     public function show(Task $task)
     {
+        $this->authorize('view' , $task) ; 
         if(!$task->is_task) return redirect()->route('tasks.index')->with('message' ,'resource not found') ;
         return view('tasks.tasks.show' , compact('task')) ;
     }
@@ -48,6 +53,7 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
+        $this->authorize('update' , $task) ;
         $user = Auth::user() ;
         $categories = Category::where('user_id' , $user->id)->get() ;
         return view('tasks.tasks.edit' , compact('task' , 'categories')) ;
@@ -56,6 +62,7 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        $this->authorize('update' , $task) ;
         $newTask = $request->validated() ;
         $task->update($newTask) ;
         $task->save() ;
@@ -66,6 +73,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        $this->authorize('delete' , $task) ;
         $task->delete() ;
         return redirect()->route('tasks.index') ;
 

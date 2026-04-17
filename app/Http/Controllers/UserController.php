@@ -15,6 +15,22 @@ class UserController extends Controller
 {
     // Authentication methods
 
+    public function dashboard()
+    {
+
+        $user = Auth::user();
+        if($user->is_banned){
+            Auth::logout();
+            return redirect()->route('login')->with('error', 'Your account has been banned. Please contact support for more information.');
+        }
+
+        // select all user's habits and tasks with their categories and logs for the current month
+        $data = $this->loadDataForDashboard($user);
+        $habits = $data['habits'];
+        $tasks = $data['tasks'];
+        return view("dashboard.dashboard", compact('user', 'tasks', 'habits'));
+    }
+
     public function showLoginForm()
     {
         return view('users.users.login');
@@ -32,8 +48,10 @@ class UserController extends Controller
         }
 
         $request->session()->regenerate();
-
-        return redirect('/dashboard')->with('success', 'You are now logged in.');
+        if(Auth::user()->is_admin) return redirect()->route('admin.dashboard')->with('success', 'You are now logged in.');
+        if(Auth::user()->is_moderator) return redirect()->route('moderator.dashboard')->with('success', 'You are now logged in.');
+        
+        return redirect()->route('dashboard')->with('success', 'You are now logged in.');
     }
 
     public function register(StoreUserRequest $request)
@@ -58,11 +76,12 @@ class UserController extends Controller
 
     // CRUD methods
 
-    // public function index()
-    // {
-    //     $users = User::all();
-    //     return view('users.users.index', compact('users'));
-    // }
+
+    public function index(){
+        $this->authorize('inex') ;
+        $users = User::where('role' , '<>' , 'Admin')->where('role' , '<>' , 'Moderator')->with('image:path')->orderBy('email')->get();
+        return view('users.users.index',  compact('users'));
+    }
 
     public function create()
     {
@@ -96,6 +115,25 @@ class UserController extends Controller
         ];
     }
 
+    public function loadDataForDashboard(User $user)
+    {
+        $user->load([
+            'habits.category',
+            'habits.logs' => function ($query) {
+                $query->whereMonth('completed_date', now()->month)->whereYear('completed_date', now()->year)->orderBy('completed_date', 'asc');
+            },
+            'tasks.category',
+        ]);
+
+        $habits = $user?->habits;
+        $tasks = $user?->tasks;
+
+        return [
+            'habits' => $habits,
+            'tasks' => $tasks,
+        ];
+    }
+
     public function profile()
     {
         $user = Auth::user();
@@ -112,7 +150,7 @@ class UserController extends Controller
     public function show(int $id)
     {
         if (Auth::id() == $id) {
-            return redirect()->route('users.profile') ;
+            return redirect()->route('users.profile');
         }
 
         $user = User::findOrFail($id);
@@ -122,7 +160,7 @@ class UserController extends Controller
             $query->where('sender_id', Auth::id())->where('receiver_id', $user->id)->where('status', 'pending');
         })->orWhere(function ($query) use ($user) {
             $query->where('sender_id', $user->id)->where('receiver_id', Auth::id())->where('status', 'pending');
-        })->get()->first(); 
+        })->get()->first();
 
 
         // dd($pendingRequest) ;
@@ -132,9 +170,9 @@ class UserController extends Controller
         $sentRequests = $data['sentRequests'];
         $receivedRequests = $data['receivedRequests'];
 
-        
 
-        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests' , 'pendingRequest'));
+
+        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests', 'pendingRequest'));
     }
 
     public function edit($id)
@@ -147,6 +185,7 @@ class UserController extends Controller
     {
         try {
             $user = User::find($id);
+            $this->authorize('update', $user);
             if (!$user) {
                 throw new Exception('user not found');
             }
@@ -169,7 +208,9 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+
         $user = User::find($id);
+        $this->authorize('delete', $user);
 
         if (!$user) {
             return redirect()->back()->with('error', 'user not found');
@@ -178,4 +219,5 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.users.index')->with('success', 'User deleted successfully.');
     }
+
 }

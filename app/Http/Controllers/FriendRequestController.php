@@ -28,12 +28,14 @@ class FriendRequestController extends Controller
 
     public function accept(FriendRequest $friendRequest)
     {
+        $this->authorize('accept', $friendRequest);
         $friendRequest->update(['status' => 'accepted']);
         return redirect()->back()->with('success', 'Friend request accepted successfully.');
     }
 
     public function reject(FriendRequest $friendRequest)
     {
+        $this->authorize('reject', $friendRequest);
         $friendRequest->update(['status' => 'rejected']);
         return redirect()->back()->with('success', 'Friend request rejected successfully.');
     }
@@ -41,6 +43,7 @@ class FriendRequestController extends Controller
 
     public function destroy(FriendRequest $request)
     {
+        $this->authorize('delete', $request);
         $request->delete();
         return redirect()->back()->with('success', 'Friend request deleted successfully.');
     }

@@ -19,16 +19,21 @@ class LogController extends Controller
     public function index()
     {
         // show the history of the task
+        $logs = Log::whereHas('task' , function($q){
+            $q->where('user_id' , Auth::id()) ;
+        })->with('task')->get() ;
+        return view('tasks.logs.index' , compact('logs')) ;
     }
 
 
     public function store(StorelogRequest $request)
     {
-
+        
         $habit = Task::where('id', $request->task_id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
+        
+        $this->authorize('create', [Log::class, $habit]);
 
         // check if the task is already done for today
         $existingLog = Log::where('task_id', $habit->id)
@@ -65,7 +70,8 @@ class LogController extends Controller
 
     public function destroy(Log $log)
     {
-
+        $this->authorize('delete', $log);
+        
         // if user checked the log by mistake, he can delete it but and decrement the streaks if it was not the first day of the streaks
         $task = $log->task;
         if(!$log->completed_date->isToday()){ 

@@ -1,4 +1,4 @@
-@foreach ($posts as $post)
+@forelse ($posts as $post)
     <div style="border: 1px solid red ; padding: 10px ; ">
         <a href="{{ route('users.show' , $post->user->id) }}"><h1>{{ $post->user->name }}</h1></a>
         <p>{{ $post->content }}</p>
@@ -13,4 +13,6 @@
         @endforelse
     </div>
     <br>
-@endforeach
+@empty
+<p>there is no posts yet</p>
+@endforelse

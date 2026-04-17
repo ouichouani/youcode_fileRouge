@@ -20,7 +20,7 @@ class TaskFactory extends Factory
     public function definition(): array
     {
 
-        // $user = User::inRandomOrder()->first() ?? User::factory()->create();
+        $user = User::inRandomOrder()->first() ?? User::factory()->create();
         $category = Category::inRandomOrder()->first();
 
         return [
@@ -34,8 +34,8 @@ class TaskFactory extends Factory
             'frequency' =>  fake()->randomElements(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], fake()->numberBetween(1, 7)),
             // 'frequency' => fake()->boolean(30) ? ['OneTime'] : fake()->randomElements(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "OneTime"], fake()->numberBetween(1, 7)),
             'category_id' => $category?->id,
-            // 'user_id' => $user->id
-            'user_id' => 1,
+            'user_id' => $user->id
+            // 'user_id' => 1,
         ];
     }
 }

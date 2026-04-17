@@ -39,4 +39,12 @@ class PostPolicy
         return false;
     }
 
+    public function hide(User $user , Post $post): bool
+    {
+        if($post->user_id == $user->id) return false ;
+        if($user->role === 'Admin' || $user->role === 'Moderator' ) {
+            return true;
+        }
+        return false;
+    }
 }

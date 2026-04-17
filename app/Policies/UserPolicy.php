@@ -21,5 +21,29 @@ class UserPolicy
         return false;
     }
 
+    public function ban(User $user): bool
+    {
+        if($user->role === 'Admin') return true ;
+        return false;
+    }
+
+    public function temp_ban (User $user):bool
+    {
+        if($user->role === 'Admin' || $user->role === 'Moderator') return true ;
+        return false;
+    }
+
+    public function index(User $user): bool
+    {
+        if($user->role === 'Admin' || $user->role == 'Moderator') return true ;
+        return false;
+    }
+
+    public function manage_app(User $user) : bool
+    {
+        // dd($user->role) ;
+        if ($user->role == 'Admin' || $user->role == 'Moderator' ) return true ;
+        return false ;
+    }
     
 }
