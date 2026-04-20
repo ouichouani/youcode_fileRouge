@@ -1,5 +1,10 @@
+@extends('components.layout')
 
+@section('title')
+    CREATE CATEGORY
+@endsection
 
+@section('content')
 
 <form action="{{ route('categories.store') }}" method="POST">
     @csrf
@@ -25,3 +30,5 @@
     <br>
     <button>create</button>
 </form>
+
+@endsection

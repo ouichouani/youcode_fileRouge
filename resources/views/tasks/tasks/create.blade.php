@@ -1,3 +1,11 @@
+@extends('components.layout')
+
+@section('title')
+    CREATE TASK
+@endsection
+
+@section('content')
+
 <form action="{{ route('tasks.store') }}" method="POST">
 
     @csrf
@@ -70,3 +78,4 @@
     <button>create</button>
 
 </form>
+@endsection

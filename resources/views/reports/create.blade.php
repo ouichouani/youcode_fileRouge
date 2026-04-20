@@ -1,5 +1,10 @@
+@extends('components.layout')
 
+@section('title')
+    CREATE REPORT
+@endsection
 
+@section('content')
 
 <form action="{{ route("reports.store") }}" method="POST">
     @csrf
@@ -18,3 +23,5 @@
     <input type="hidden" name="post_id" value='{{ $post_id }}'>
     <button>report</button>
 </form>
+
+@endsection

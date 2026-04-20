@@ -1,3 +1,12 @@
+@extends('components.layout')
+
+@section('title')
+    EDIT CTEGORY
+@endsection
+
+
+@section('content')
+
 <form action="{{ route('categories.update' , $category->id) }}" method="POST">
     @csrf
     @method('PUT')
@@ -18,3 +27,4 @@
     <br>
     <button>update</button>
 </form>
+@endsection

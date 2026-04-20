@@ -1,3 +1,11 @@
+@extends('components.layout')
+
+@section('title')
+    DASHBOARD
+@endsection
+
+
+@section('content')
 
 
 @forelse ($habits as $habit )
@@ -40,3 +48,6 @@
 <p>no habits created yet</p>
 
 @endforelse
+
+
+@endsection

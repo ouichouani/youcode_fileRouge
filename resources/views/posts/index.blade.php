@@ -1,3 +1,12 @@
+@extends('components.layout')
+
+@section('title')
+    POSTS
+@endsection
+
+
+@section('content')
+
 @forelse ($posts as $post)
 
     <div style="border: 1px solid red ; padding: 10px ; ">
@@ -25,3 +34,5 @@
 @empty
     <p>there is no posts yet</p>
 @endforelse
+
+@endsection

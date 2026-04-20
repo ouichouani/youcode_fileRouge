@@ -1,4 +1,13 @@
+@extends('components.layout')
 
+
+@section('title')
+    SHOW TASK
+@endsection
+
+
+
+@section('content')
 
 
 <div style="max-width: 700px; margin: 30px auto; font-family: Arial, sans-serif;">
@@ -41,3 +50,4 @@
         </form>
     </div>
 </div>
+@endsection

@@ -1,3 +1,12 @@
+@extends('components.layout')
+
+@section('title')
+    EDIT PROFILE
+@endsection
+
+
+@section('content')
+
 <div style="max-width: 500px; margin: 40px auto; font-family: Arial, sans-serif;">
     <h1>update Account</h1>
     <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data"
@@ -49,3 +58,5 @@
 
 
 </div>
+
+@endsection

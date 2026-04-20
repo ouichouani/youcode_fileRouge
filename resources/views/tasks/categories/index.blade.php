@@ -1,3 +1,13 @@
+@extends('components.layout')
+
+@section('title')
+    CATEGORIES
+@endsection
+
+
+@section('content')
+
+
 @can('accessGlobalCategories', App\Models\Category::class)
     <a href="{{ route('categories.create') }}">create a global category</a>
 @endcan
@@ -15,3 +25,5 @@
     <p>no cat created yet</p>
 @endforelse
 
+
+@endsection

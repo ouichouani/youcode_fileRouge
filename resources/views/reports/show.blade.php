@@ -1,5 +1,10 @@
+@extends('components.layout')
 
+@section('title')
+    DASHBOARD
+@endsection
 
+@section('content')
 
 <p> ------------- post ------------</p>
 <p>{{ $post->id }}</p>
@@ -15,3 +20,4 @@
 <p>{{ $user->email}} make a report : </p>
 <p>id : {{ $report->id }}</p>
 <p>content : {{ $report->description }}</p>
+@endsection

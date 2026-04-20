@@ -1,3 +1,12 @@
+@extends('components.layout')
+
+@section('title')
+    REQUESTS
+@endsection
+
+@section('content')
+
+
 @forelse ($friendRequests as $f)
     <p> {{ $f->sender->name }}</p>
     <p> -- status : {{ $f->status }}</p>
@@ -26,3 +35,5 @@
 
     <p>there is no pending received req</p>
 @endforelse
+
+@endsection

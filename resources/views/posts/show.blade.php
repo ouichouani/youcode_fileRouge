@@ -1,3 +1,12 @@
+@extends('components.layout')
+
+@section('title')
+    DASHBOARD
+@endsection
+
+
+@section('content')
+
 
 <img src="{{ asset('storage/' . $post?->image?->path) }}" alt="">
 <p>content : {{$post->content}} </p>
@@ -37,3 +46,6 @@
     <input type="hidden" name="post_id" value="{{ $post->id }}">
     <button>send</button>
 </form>
+
+
+@endsection

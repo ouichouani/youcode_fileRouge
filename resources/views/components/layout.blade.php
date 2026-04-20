@@ -13,10 +13,10 @@
 
 
     
-    <div class="bg-red-100 flex w-full">
+    <div class="bg-red-100 flex w-full h-screen">
         @include('components.sidebar')
         
-        <section class="w-full">
+        <section class="w-full bg-green-700 overflow-y-auto">
             @include('components.header')
             <main>
                 @yield('content')

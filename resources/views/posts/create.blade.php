@@ -1,3 +1,12 @@
+@extends('components.layout')
+
+@section('title')
+    CREATE POST
+@endsection
+
+@section('content')
+
+
 @php
     $types = ['Question', 'History', 'Encouragement'];
     $visibilities = ['public', 'private', 'friends'];
@@ -317,3 +326,6 @@
         </main>
     </body>
 </html>
+
+
+@endsection

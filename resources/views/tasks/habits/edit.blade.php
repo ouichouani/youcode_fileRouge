@@ -1,3 +1,14 @@
+@extends('components.layout')
+
+@section('title')
+    EDIT HABIT
+@endsection
+
+
+
+@section('content')
+
+
 @php
     $freq = $habit->frequency ?? [];
 @endphp
@@ -91,3 +102,4 @@
     <button>create</button>
 
 </form>
+@endsection

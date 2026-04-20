@@ -1,3 +1,12 @@
+@extends('components.layout')
+
+@section('title')
+    CREATE HABIT
+@endsection
+
+
+@section('content')
+
 <form action="{{ route('habits.store') }}" method="POST">
     
     @csrf
@@ -75,3 +84,4 @@
     <button>create</button>
 
 </form>
+@endsection

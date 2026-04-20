@@ -1,6 +1,12 @@
+@extends('components.layout')
 
 
+@section('title')
+    REPORTS
+@endsection
 
+
+@section('content')
 
 @forelse ($reports as $report) 
 

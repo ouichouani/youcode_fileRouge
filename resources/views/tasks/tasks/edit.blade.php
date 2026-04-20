@@ -1,3 +1,14 @@
+@extends('components.layout')
+
+
+@section('title')
+    EDIT TASK
+@endsection
+
+
+@section('content')
+
+
 @php
     $freq = $task->frequency ?? [];
 @endphp
@@ -73,3 +84,4 @@
     <button>create</button>
 
 </form>
+@endsection

@@ -1,6 +1,12 @@
-{{-- @if($errors)
-{{ dd($errors) }}
-@endif --}}
+@extends('components.layout')
+
+
+@section('title')
+    SHOW USER
+@endsection
+
+
+@section('content')
 <img src="{{ asset('storage/' . $user?->image?->path) }}" alt=""
     style="width:200px;height:200px;background-color:red;border-radius:3000px">
 <p>{{ $user->name }}</p>
@@ -46,7 +52,7 @@
 @foreach ($posts as $p)
     @can('hide', $p)
         <form
-            action="{{ auth()->user()->role === 'Admin' ? route('admin.post.hide', $p->id) : route('admin.post.hide', $p->id) }}"
+            action="{{ auth()->user()->role === 'Admin' ? route('posts.hide', $p->id) : route('admin.post.hide', $p->id) }}"
             method='POST'>
             @csrf
             <button>hide</button>
@@ -71,3 +77,6 @@
         <a href="{{ route('posts.edit', $p->id) }}">update</a>
     @endif
 @endforeach
+
+
+@endsection

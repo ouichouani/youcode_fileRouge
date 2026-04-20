@@ -1,5 +1,10 @@
+@extends('components.layout')
 
+@section('title')
+    SHOW CATEGORY
+@endsection
 
+@section('content')
 
 <section style="background-color: {{ $category->color }}">
     <p>{{ $category->title }}</p>
@@ -39,3 +44,5 @@
 <p>this cat doesn't have any habits</p>
 
 @endforelse
+
+@endsection
