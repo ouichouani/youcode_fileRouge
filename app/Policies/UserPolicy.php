@@ -41,7 +41,6 @@ class UserPolicy
 
     public function manage_app(User $user) : bool
     {
-        // dd($user->role) ;
         if ($user->role == 'Admin' || $user->role == 'Moderator' ) return true ;
         return false ;
     }

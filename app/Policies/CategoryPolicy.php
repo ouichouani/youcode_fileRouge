@@ -26,20 +26,12 @@ class CategoryPolicy
         return $user->id === $category->user_id;
     }
 
-    public function UpdateGlobalCategory(User $user, Category $category): bool
+    public function accessGlobalCategories(User $user): bool
     {
-        if (!$category->is_global && $user->role === "Admin") return true;
+        if ($user->role === "Admin") return true;
         return false;
     }
 
-    public function CreateGlobalCategory(User $user): bool
-    {
-        return $user->role === "Admin";
-    }
 
-    public function ShowGlobalCategory(User $user): bool
-    {
-        if ($user->role == "Admin") return true;
-        return false;
-    }
+
 }

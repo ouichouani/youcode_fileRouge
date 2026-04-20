@@ -10,7 +10,7 @@ class Category extends Model
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
 
-    protected $fillable = ["title" , "color" , "description" , "user_id"] ;
+    protected $fillable = ["title" , "color" , "description" , "user_id" , "is_global"] ;
 
     public function image(){
         return $this->morphOne(Image::class , 'imageable') ;

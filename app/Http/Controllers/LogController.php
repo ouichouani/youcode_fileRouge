@@ -118,10 +118,13 @@ class LogController extends Controller
             $totalLogs = $habit->logs_count;
 
             // get all expected days in case a habit is not daily
-            $expectedDays = collect(range(0, $habit->created_at->diffInDays(now())))
+            $expectedDays = 1 ;
+            if($habit->created_at->diffInDays(now()) > 0 ){
+                $expectedDays = collect(range(0, $habit->created_at->diffInDays(now())))
                 ->map(fn($i) => $habit->created_at->copy()->addDays($i))
                 ->filter(fn($date) => (in_array($date->format('l'), $habit->frequency)))
                 ->count();
+            }
 
             return ($difficulty * $priority * $totalLogs) - ($difficulty * $priority * $expectedDays * 0.5) + $habit->streaks;
         })->avg();

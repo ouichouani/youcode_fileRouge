@@ -26,6 +26,7 @@ class StoreCategoryRequest extends FormRequest
             'title' => 'required|string|min:1',
             'color' => 'nullable|string|min:1',
             'description' => 'nullable|string|min:3',
+            'is_global' => 'sometimes' ,
         ];
     }
 }

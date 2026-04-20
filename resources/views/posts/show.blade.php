@@ -1,5 +1,5 @@
 
-
+<img src="{{ asset('storage/' . $post?->image?->path) }}" alt="">
 <p>content : {{$post->content}} </p>
 <p>type : {{$post->type}} </p>
 <p>visibility : {{$post->visibility}} </p>

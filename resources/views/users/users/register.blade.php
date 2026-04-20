@@ -1,7 +1,7 @@
 <div style="max-width: 500px; margin: 40px auto; font-family: Arial, sans-serif;">
     <h1>Create Account</h1>
 
-    <form action="{{ route('register') }}" method="POST" style="display: grid; gap: 12px;">
+    <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data" style="display: grid; gap: 12px;">
         @csrf
 
         <div>
@@ -68,6 +68,14 @@
                 style="width: 100%; padding: 10px;"
             >{{ old('bio') }}</textarea>
             @error('bio')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div>
+            <label for="bio">image</label>
+            <input type="file" name="image">
+            @error('image')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
         </div>

@@ -1,6 +1,9 @@
 
 <nav>
+    @can('ban' , App\Models\User::class )
     <a href="{{ route('users.index') }}">active users</a>
+    <a href="{{ route('categories.global') }}">global categories</a>
+    @endcan
     <a href="{{ route('posts.hidden') }}">hidden posts</a>
     <a href="{{ route('reports.index') }}">reports</a>
 </nav>

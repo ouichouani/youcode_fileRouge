@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\FriendRequest;
+use App\Models\Image;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class UserController extends Controller
     {
 
         $user = Auth::user();
-        if($user->is_banned){
+        if ($user->is_banned) {
             Auth::logout();
             return redirect()->route('login')->with('error', 'Your account has been banned. Please contact support for more information.');
         }
@@ -48,9 +49,9 @@ class UserController extends Controller
         }
 
         $request->session()->regenerate();
-        if(Auth::user()->is_admin) return redirect()->route('admin.dashboard')->with('success', 'You are now logged in.');
-        if(Auth::user()->is_moderator) return redirect()->route('moderator.dashboard')->with('success', 'You are now logged in.');
-        
+        if (Auth::user()->is_admin) return redirect()->route('admin.dashboard')->with('success', 'You are now logged in.');
+        if (Auth::user()->is_moderator) return redirect()->route('moderator.dashboard')->with('success', 'You are now logged in.');
+
         return redirect()->route('dashboard')->with('success', 'You are now logged in.');
     }
 
@@ -60,6 +61,10 @@ class UserController extends Controller
         $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
+        
+        if (isset($image) && $image instanceof \Illuminate\Http\UploadedFile) {
+            Image::store($user, 'users', $data['image']);
+        }
         Auth::login($user);
 
         return redirect()->route('dashboard')->with('success', 'Account created successfully.');
@@ -77,9 +82,10 @@ class UserController extends Controller
     // CRUD methods
 
 
-    public function index(){
-        $this->authorize('inex') ;
-        $users = User::where('role' , '<>' , 'Admin')->where('role' , '<>' , 'Moderator')->with('image:path')->orderBy('email')->get();
+    public function index()
+    {
+        $this->authorize('inex');
+        $users = User::where('role', '<>', 'Admin')->where('role', '<>', 'Moderator')->with('image:path')->orderBy('email')->get();
         return view('users.users.index',  compact('users'));
     }
 
@@ -94,14 +100,15 @@ class UserController extends Controller
         if (!$user) return redirect()->route('login')->with('error', 'Please login to view your profile');
 
         $user->load([
-
             'posts.comments',
             'posts.likes',
-            'posts.images:path',
-            'image:path',
+            'posts.images:path,imageable_id',
+            'image:path,imageable_id',
+
             'sentRequests' => function ($query) {
                 $query->where('status', 'accepted')->with(['receiver:id,name', 'receiver.image:path']);
             },
+
             'receivedRequests' => function ($query) {
                 $query->where('status', 'accepted')->with(['sender:id,name', 'sender.image:path']);
             }
@@ -163,7 +170,6 @@ class UserController extends Controller
         })->get()->first();
 
 
-        // dd($pendingRequest) ;
 
         $data = $this->loadRelationsforShow($user);
         $posts = $data['posts'];
@@ -178,7 +184,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('users.edit', compact('user'));
+        return view('users.users.edit', compact('user'));
     }
 
     public function update(UpdateUserRequest $request, $id)
@@ -199,8 +205,13 @@ class UserController extends Controller
             }
 
             $user->update($data);
+            $image = $data['image'];
+            if (isset($image) && $image instanceof \Illuminate\Http\UploadedFile) {
+                Image::store($user, 'users', $image);
+            }
 
-            return redirect()->route('users.users.show', $user->id)->with('success', 'User updated successfully.');
+
+            return redirect()->route('users.show', $user->id)->with('success', 'User updated successfully.');
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -219,5 +230,4 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.users.index')->with('success', 'User deleted successfully.');
     }
-
 }

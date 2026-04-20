@@ -16,6 +16,12 @@ class ReportPolicy
         return false;
     }
 
+    public function store (User $user):bool
+    {
+        if($user->role === 'Client') return true ;
+        return false ;
+    }
+
     public function view(User $user, Report $report): bool
     {
         if($user->role === 'Admin' || $user->role === 'Moderator') return true ;

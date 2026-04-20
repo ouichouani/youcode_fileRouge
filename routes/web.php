@@ -40,8 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/posts', PostController::class)->missing(function () {return redirect()->route('posts.index')->with('message', 'resource not found');});
     Route::resource('/requests', FriendRequestController::class)->missing(function () {return redirect()->route('requests.index')->with('message', 'resource not found');});
     Route::resource('/reports', ReportController::class)->missing(function () {return redirect()->route('reports.index')->with('message', 'resource not found');});
-    Route::resource('/notifications', NotificationController::class)->missing(function () {return redirect()->route('reports.index')->with('message', 'resource not found');});
+    Route::resource('/notifications', NotificationController::class)->missing(function () {return redirect()->route('notification.index')->with('message', 'resource not found');});
     
+    Route::post('/reports/{report}', [ModeratorController::class , 'confirmReport'])->name('reports.confirm')->missing(function () {return redirect()->route('reports.index')->with('message', 'resource not found');});
     Route::get('/tasks' , [TaskController::class , 'tasks'])->name('tasks.index') ;
     Route::get('/habits' , [TaskController::class , 'habits'])->name('habits.index') ;
     
@@ -74,6 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/' , [ModeratorController::class , 'blackList'])->name('blackList') ;
         Route::get('black-list' , [ModeratorController::class , 'blackList'])->name('blackList') ;
         Route::get('posts/hidden' , [ModeratorController::class , 'showHiddenPosts'])->name('posts.hidden') ;
+        route::get('global-categories' , [CategoryController::class , 'indexGlobalCategories'])->name('categories.global');
     });
 });
 

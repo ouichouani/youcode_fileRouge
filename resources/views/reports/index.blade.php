@@ -33,6 +33,12 @@
         @method('DELETE')
         <button>delete</button>
     </form>
+    @can('confirm' , \App\Models\Report::class)
+    <form action="{{ route("reports.confirm" , $report->id) }}" method='POST'>
+        @csrf
+        <button>confirm</button>
+    </form>
+    @endcan
 
     <p>-----------------------------------------------</p>
     <p>-----------------------------------------------</p>

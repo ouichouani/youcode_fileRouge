@@ -6,6 +6,7 @@ use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
 use App\Models\Report;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Request;
 
 class ReportController extends Controller
 {
@@ -29,6 +30,8 @@ class ReportController extends Controller
         
         if(Auth::user()->role == 'Admin'){
             $reports = $reports->where('is_confirmed' , true) ;
+        }else{
+             $reports = $reports->where('is_confirmed' , false) ;
         }
 
         $reports = $reports->get() ;
@@ -36,17 +39,21 @@ class ReportController extends Controller
     }
 
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('reports.create');
+        $this->authorize('store' , Report::class);
+        $post_id = $request->query('post') ;
+        return view('reports.create' , compact('post_id'));
     }
 
 
     public function store(StoreReportRequest $request)
     {
+        $this->authorize('store' ,  Report::class) ;
         $report = $request->validated();
+        $report['user_id'] = Auth::id() ;  
         $report = Report::create($report);
-        return redirect()->back()->with('success', 'Report created successfully.');
+        return redirect()->route('posts.index')->with('success', 'Report created successfully.');
     }
 
 

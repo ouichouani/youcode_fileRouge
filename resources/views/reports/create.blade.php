@@ -15,6 +15,6 @@
         <option value='scam' >scam</option>
         <option value='other' >other</option>
     </select>
-    <input type="hidden" name="post_id" value='1'>
+    <input type="hidden" name="post_id" value='{{ $post_id }}'>
     <button>report</button>
 </form>
