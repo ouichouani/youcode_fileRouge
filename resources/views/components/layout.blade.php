@@ -16,7 +16,7 @@
         
         <section class="w-full overflow-y-auto bg-[#0d1117] text-white">
             @include('components.header')
-            <main>
+            <main class="text-sm p-[1em]">
                 @yield('content')
             </main>
             @include('components.footer')
