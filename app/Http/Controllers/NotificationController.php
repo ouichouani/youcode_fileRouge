@@ -9,6 +9,6 @@ class NotificationController extends Controller
     //
 
     public function index(){
-        dd('notification page index') ;
+        return view('users.notifications.index') ;
     }
 }

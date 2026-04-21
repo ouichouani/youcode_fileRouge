@@ -61,7 +61,7 @@ class UserController extends Controller
         $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
-        
+
         if (isset($image) && $image instanceof \Illuminate\Http\UploadedFile) {
             Image::store($user, 'users', $data['image']);
         }
@@ -84,7 +84,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $this->authorize('inex');
+        $this->authorize('index', User::class);
         $users = User::where('role', '<>', 'Admin')->where('role', '<>', 'Moderator')->with('image:path')->orderBy('email')->get();
         return view('users.users.index',  compact('users'));
     }
@@ -125,13 +125,15 @@ class UserController extends Controller
     public function loadDataForDashboard(User $user)
     {
         $user->load([
+            'habits' => function ($query) {
+                $query->orderBy('id', 'asc');
+            },
             'habits.category',
             'habits.logs' => function ($query) {
                 $query->whereMonth('completed_date', now()->month)->whereYear('completed_date', now()->year)->orderBy('completed_date', 'asc');
             },
             'tasks.category',
         ]);
-
         $habits = $user?->habits;
         $tasks = $user?->tasks;
 

@@ -12,7 +12,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::where('user_id', Auth::id());
+        $categories = Category::where('user_id', Auth::id())->get();
         return view('tasks.categories.index', compact('categories'));
     }
 

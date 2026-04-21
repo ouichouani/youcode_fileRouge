@@ -6,14 +6,13 @@
 @endsection
 
 @section('nav')
-    <nav>
         <a href='{{ route('dashboard') }}'>board</a>
         <a href='{{ route('habits.index') }}'>habits</a>
         <a href='{{ route('tasks.index') }}'>tasks</a>
         <a href='{{ route('logs.index') }}'>historie</a>
         <a href='{{ route('categories.index') }}'>categories</a>
-    </nav>
 @endsection
+
 
 @section('content')
 

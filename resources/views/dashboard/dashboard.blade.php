@@ -5,24 +5,20 @@
 @endsection
 
 @section('nav')
-    <nav>
-        <a href='{{ route('dashboard') }}'>board</a>
-        <a href='{{ route('habits.index') }}'>habits</a>
-        <a href='{{ route('tasks.index') }}'>tasks</a>
-        <a href='{{ route('logs.index') }}'>historie</a>
-        <a href='{{ route('categories.index') }}'>categories</a>
-    </nav>
+    <a href='{{ route('dashboard') }}'>board</a>
+    <a href='{{ route('habits.index') }}'>habits</a>
+    <a href='{{ route('tasks.index') }}'>tasks</a>
+    <a href='{{ route('logs.index') }}'>historie</a>
+    <a href='{{ route('categories.index') }}'>categories</a>
 @endsection
 
 @section('content')
-    <p>--------------------------- table ---------------------------</p>
-
-    <table border=1>
+    <table class="border border-solid border-white/30 m-5 rounded-4xl">
         <thead>
             <tr>
-                <td>habit</td>
+                <td class="px-3 border-b border-solid border-white/30 min-w-[25px]">habit</td>
                 @for ($i = 1; $i <= now()->daysInMonth; $i++)
-                    <td>{{ $i }}</td>
+                    <td class="border border-solid border-white min-w-[25px] text-center">{{ $i }}</td>
                 @endfor
             </tr>
         </thead>
@@ -34,51 +30,57 @@
                     $current_log_index = 0;
                 @endphp
                 <tr>
-                    <td>{{ $h->title }}</td>
+                    <td class="px-3 border-b border-solid border-white/20 min-w-[25px]">{{ $h->title }}</td>
                     @for ($i = 1; $i <= now()->daysInMonth; $i++)
-                        @if (now()->day > $i)
+                    @php
+                        $now = now() ;
+                        $index_date = new DateTime ("$i-$now->month-$now->year") ;
+                        $day = $index_date->format('l') ;
+                    @endphp
+                        @if (now()->day > $i && in_array($day , $h->frequency))
                             @if (isset($logs[$current_log_index]) && $logs[$current_log_index]->completed_date->day == $i)
                                 @php
                                     $current_log_index++;
                                 @endphp
-                                <td style="background-color: green">
-                                    <p>ok</p>
-                                </td>
+                                <td class="border border-solid border-white/80 min-w-[25px] text-center bg-green-800"><img
+                                        src="{{ asset('ok.svg') }}" class="w-[15px] m-auto" alt=""></td>
                             @else
-                                <td style="background-color: red">
-
-                                    <p>no</p>
-                                </td>
+                                <td class="border border-solid border-white/80 min-w-[25px] text-center bg-red-800"><img
+                                        src="{{ asset('x.svg') }}" class="w-[15px] m-auto" alt=""></td>
                             @endif
-                        @elseif (now()->day == $i)
-                            <td>
-                                @php
-                                    //check if the current day log is created or not
-                                    $lastLog = $logs->last();
-                                @endphp
 
-                                @if ($lastLog?->completed_date->day != $i)
+                            @php
+                                //check if the current day log is created or not
+                                $lastLog = $logs->last();
+                                // $currentDay = now()->format('l');
+                            @endphp
+                        @elseif (now()->day == $i && in_array(now()->format('l'), $h?->frequency))
+                            @if ($lastLog?->completed_date->day != $i)
+                                <td class="border border-solid border-white/80 min-w-[25px] text-center">
                                     <form action="{{ route('logs.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="task_id" value="{{ $h->id }}">
-                                        <input type="submit" value="create">
+                                        <button><img src="{{ asset('ok.svg') }}" class="w-[15px] m-auto"
+                                                alt=""></button>
                                     </form>
-                                @else
+                                </td>
+                            @else
+                                <td class="border border-solid border-white/80 min-w-[25px] text-center bg-green-800">
                                     <form action="{{ route('logs.destroy', $lastLog->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <input type="hidden" name="task_id" value="{{ $h->id }}">
-                                        <input type="submit" value="delete">
+                                        <button><img src="{{ asset('ok.svg') }}" class="w-[15px] m-auto"
+                                                alt=""></button>
                                     </form>
-                                @endif
-                            </td>
+                                </td>
+                            @endif
                         @else
-                            <td>.</td>
+                            <td class="border border-solid border-white/80 min-w-[25px] text-center"></td>
                         @endif
                     @endfor
                 </tr>
             @endforeach
         </tbody>
     </table>
-
 @endsection

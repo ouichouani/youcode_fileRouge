@@ -1,5 +1,6 @@
 <aside
-    class="min-h-screen w-[20vw] min-w-[220px] bg-gradient-to-b from-black via-slate-950 to-blue-900 px-6 py-10 text-blue-100 shadow-2xl sticky ">
+    class="min-h-screen w-[15vw] min-w-[200px] bg-gradient-to-b from-black via-slate-950 to-blue-900 px-6 py-10 text-blue-100 shadow-2xl sticky border-r-[2px] border-blue-600 border-solid">
+    
     <ul class="flex flex-col gap-4 text-lg font-semibold tracking-wide">
         <a class="rounded-xl border border-blue-500/20 px-4 py-3 transition hover:border-blue-300/50 hover:bg-blue-500/10 hover:text-white"
             href='{{ route('dashboard') }}'>dashboard</a>

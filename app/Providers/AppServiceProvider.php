@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\User;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
             "User" => User::class ,
             "Post" => Post::class
         ]) ;
+
+
     }
 }
