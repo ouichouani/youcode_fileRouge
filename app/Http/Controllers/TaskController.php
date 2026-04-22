@@ -12,17 +12,17 @@ class TaskController extends Controller
 {
 
 
-    public function tasks()
+    public function index()
     {
         $tasks = Task::where('is_task' , true)->where('user_id' , Auth::id())->latest()->get() ;
         return view('tasks.tasks.index' , compact('tasks')) ;
     }
 
-    public function habits()
-    {
-        $habits = Task::where('is_task' , false)->where('user_id' , Auth::id())->latest()->get() ;
-        return view('tasks.habits.index' , compact('habits')) ;
-    }
+    // public function habits()
+    // {
+    //     $habits = Task::where('is_task' , false)->where('user_id' , Auth::id())->latest()->get() ;
+    //     return view('tasks.habits.index' , compact('habits')) ;
+    // }
 
 
     public function create()

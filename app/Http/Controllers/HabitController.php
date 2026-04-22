@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Task;
 use App\Policies\TaskPolicy;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HabitController extends Controller
 {
@@ -17,9 +18,21 @@ class HabitController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $user->load('habits');
-        $habits = $user->habits;
-        return view('tasks.habits.index', compact('user', 'habits'));
+
+        $categories = Category::where(
+            function ($q) use ($user) {
+                $q->where('user_id', $user->id)->orWhere('is_global', true);
+            }
+        )->whereHas('habits', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })
+            ->with(['habits' => function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+        }])
+        ->get();
+
+
+        return view('tasks.habits.index', compact('user', "categories"));
     }
 
     public function create()
@@ -35,13 +48,13 @@ class HabitController extends Controller
         $data  = $request->validated();
         $data['user_id'] = Auth::id();
         $habit = Task::create($data);
-        return redirect()->route('habits.show' ,$habit);
+        return redirect()->route('habits.show', $habit);
     }
 
 
     public function show(Task $habit)
     {
-        if($habit->is_task) return redirect()->route('habits.index')->with('message' ,'resource not found') ;
+        if ($habit->is_task) return redirect()->route('habits.index')->with('message', 'resource not found');
         return view('tasks.habits.show', compact('habit'));
     }
 
@@ -60,7 +73,7 @@ class HabitController extends Controller
         $newHabit = $request->validated();
         $task->update($newHabit);
         $task->save();
-        return redirect()->route('habits.show' ,$task);
+        return redirect()->route('habits.show', $task);
     }
 
 
@@ -68,7 +81,6 @@ class HabitController extends Controller
     {
         $this->authorize('delete', $habit);
         $habit->delete();
-        return redirect()->route('habits.index') ;
+        return redirect()->route('habits.index');
     }
-
 }

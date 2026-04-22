@@ -43,8 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/notifications', NotificationController::class)->missing(function () {return redirect()->route('notification.index')->with('message', 'resource not found');});
     
     Route::post('/reports/{report}', [ModeratorController::class , 'confirmReport'])->name('reports.confirm')->missing(function () {return redirect()->route('reports.index')->with('message', 'resource not found');});
-    Route::get('/tasks' , [TaskController::class , 'tasks'])->name('tasks.index') ;
-    Route::get('/habits' , [TaskController::class , 'habits'])->name('habits.index') ;
+    // Route::get('/tasks' , [TaskController::class , 'tasks'])->name('tasks.index') ;
+    // Route::get('/habits' , [TaskController::class , 'habits'])->name('habits.index') ;
     
     Route::get('/logs', [LogController::class , 'index'])->name('logs.index');
 
