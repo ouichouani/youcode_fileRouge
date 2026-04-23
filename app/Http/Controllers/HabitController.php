@@ -31,8 +31,11 @@ class HabitController extends Controller
         }])
         ->get();
 
+        $abandoned_habits = Task::where('user_id' , $user->id)->where('category_id' , null)->where('is_task' , false)->get() ;
+        // dd($abandoned_habits) ;
 
-        return view('tasks.habits.index', compact('user', "categories"));
+
+        return view('tasks.habits.index', compact('user', "categories" , "abandoned_habits"));
     }
 
     public function create()

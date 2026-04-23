@@ -26,14 +26,16 @@
 
         @foreach ($categories as $cat)
             <div
-                class='border border-white/30 border-solid rounded-lg p-[20px] flex flex-col gap-15 bg-[{{ $cat->color }}]/10 '>
+                class='border border-white/30 border-solid rounded-lg flex flex-col gap-15  '>
 
-                <a href="{{ route('categories.show', $cat->id) }}" class="flex gap-3 items-center">
+            <div class="bg-[{{ $cat->color }}]/10 p-[20px] border-b border-solid border-white/30">
+                <a href="{{ route('categories.show', $cat->id) }}" class="flex gap-3 items-center w-fit">
                     <div class='bg-[{{ $cat->color }}] rounded-full w-[20px] h-[20px]'></div>
                     <h1 class="text-3xl font-bold">{{ $cat->title }}</h1>
                 </a>
+            </div>
 
-                <section class="flex flex-col gap-7">
+                <section class="flex flex-col gap-7 p-[20px]">
                     @forelse ($cat->tasks as $task)
                         <div class="flex flex-col gap-3">
                             <form class="flex gap-3" action="{{ route('tasks.done', $task->id) }}" method='POST'>
