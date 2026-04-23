@@ -62,7 +62,7 @@
                                         @csrf
                                         <input type="hidden" name="task_id" value="{{ $h->id }}">
                                         <button class="cursor-pointer">
-                                            <img src="{{ asset('svg/ok.svg') }}" class="w-[20px] pointer-events-none" alt="">
+                                            <img src="{{ asset('svg/ok.svg') }}" class="w-[15px] pointer-events-none" alt="">
                                         </button>
                                     </form>
                                 </td>
