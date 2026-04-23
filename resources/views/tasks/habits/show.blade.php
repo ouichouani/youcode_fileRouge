@@ -17,15 +17,17 @@
         <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] p-6 shadow-lg">
             <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                 <div class="flex-1">
-                    <div class="mb-4 flex items-center gap-3 mt-2">
-                        <div
-                            class="h-3 w-3 rounded-full border border-white/70 bg-[{{ $habit->category?->color ?? '#9198a1' }}]">
-                        </div>
+                    @if ($habit->category_id != null)
+                        <div class="mb-4 flex items-center gap-3 mt-2">
+                            <div
+                                class="h-3 w-3 rounded-full border border-white/70 bg-[{{ $habit->category?->color ?? '#9198a1' }}]">
+                            </div>
 
-                        <a href="{{ route('categories.show', $habit->category?->id) }}">
-                            <p class="text-lg text-[#9198a1]">{{ $habit->category?->title }}</p>
-                        </a>
-                    </div>
+                            <a href="{{ route('categories.show', $habit->category?->id) }}">
+                                <p class="text-lg text-[#9198a1]">{{ $habit->category?->title }}</p>
+                            </a>
+                        </div>
+                    @endif
                     <h2 class="text-3xl font-bold text-white">{{ $habit->title }}</h2>
 
 

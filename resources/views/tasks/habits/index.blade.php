@@ -77,7 +77,7 @@
                             <p class="text-[#9198a1] w-[80%] pl-[10px]">&emsp; description : {{ $habit->description }} </p>
                         </div>
                     @empty
-                        <p>no habits for this cat</p>
+                        <p>no abandoned habits</p>
                     @endforelse
                 </section>
 

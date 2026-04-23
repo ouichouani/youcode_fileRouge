@@ -31,8 +31,9 @@ class TaskController extends Controller
         ->orderBy('id')
         ->get();
 
+        $abandoned_tasks = Task::where('user_id' , $user->id)->where('category_id' , null)->where('is_task' , true)->get() ;
 
-        return view('tasks.tasks.index', compact('user', "categories"));
+        return view('tasks.tasks.index', compact('user', "categories" , "abandoned_tasks"));
     }
 
 
