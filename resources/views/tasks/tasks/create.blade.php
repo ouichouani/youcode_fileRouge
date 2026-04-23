@@ -54,13 +54,13 @@
                     <span class="text-sm font-medium text-white">Difficulty</span>
                     <select id="difficulty" name="difficulty" required
                         class="p-2 px-3 bg-[#0d1117] border border-solid border-white/20 rounded-lg text-white focus:bg-transparent focus:outline-blue-500 focus:outline-2">
-                        <option value="xxs" @selected(old('difficulty') === 'xxs')>xxs</option>
-                        <option value="xs" @selected(old('difficulty') === 'xs')>xs</option>
-                        <option value="s" @selected(old('difficulty') === 's')>s</option>
-                        <option value="m" @selected(old('difficulty', 'm') === 'm')>m</option>
-                        <option value="l" @selected(old('difficulty') === 'l')>l</option>
-                        <option value="xl" @selected(old('difficulty') === 'xl')>xl</option>
-                        <option value="xxl" @selected(old('difficulty') === 'xxl')>xxl</option>
+                        <option class="bg-[#151b23] text-white" value="xxs" @selected(old('difficulty') === 'xxs')>xxs</option>
+                        <option class="bg-[#151b23] text-white" value="xs" @selected(old('difficulty') === 'xs')>xs</option>
+                        <option class="bg-[#151b23] text-white" value="s" @selected(old('difficulty') === 's')>s</option>
+                        <option class="bg-[#151b23] text-white" value="m" @selected(old('difficulty', 'm') === 'm')>m</option>
+                        <option class="bg-[#151b23] text-white" value="l" @selected(old('difficulty') === 'l')>l</option>
+                        <option class="bg-[#151b23] text-white" value="xl" @selected(old('difficulty') === 'xl')>xl</option>
+                        <option class="bg-[#151b23] text-white" value="xxl" @selected(old('difficulty') === 'xxl')>xxl</option>
                     </select>
                 </label>
                 @error('difficulty')
@@ -73,13 +73,13 @@
                     <span class="text-sm font-medium text-white">Priority</span>
                     <select id="priority" name="priority" required
                         class="p-2 px-3 bg-[#0d1117] border border-solid border-white/20 rounded-lg text-white focus:bg-transparent focus:outline-blue-500 focus:outline-2">
-                        <option value="xxs" @selected(old('priority') === 'xxs')>xxs</option>
-                        <option value="xs" @selected(old('priority') === 'xs')>xs</option>
-                        <option value="s" @selected(old('priority') === 's')>s</option>
-                        <option value="m" @selected(old('priority', 'm') === 'm')>m</option>
-                        <option value="l" @selected(old('priority') === 'l')>l</option>
-                        <option value="xl" @selected(old('priority') === 'xl')>xl</option>
-                        <option value="xxl" @selected(old('priority') === 'xxl')>xxl</option>
+                        <option class="bg-[#151b23] text-white" value="xxs" @selected(old('priority') === 'xxs')>xxs</option>
+                        <option class="bg-[#151b23] text-white" value="xs" @selected(old('priority') === 'xs')>xs</option>
+                        <option class="bg-[#151b23] text-white" value="s" @selected(old('priority') === 's')>s</option>
+                        <option class="bg-[#151b23] text-white" value="m" @selected(old('priority', 'm') === 'm')>m</option>
+                        <option class="bg-[#151b23] text-white" value="l" @selected(old('priority') === 'l')>l</option>
+                        <option class="bg-[#151b23] text-white" value="xl" @selected(old('priority') === 'xl')>xl</option>
+                        <option class="bg-[#151b23] text-white" value="xxl" @selected(old('priority') === 'xxl')>xxl</option>
                     </select>
                 </label>
                 @error('priority')
@@ -110,7 +110,7 @@
                         <select id="category_id" name="category_id"
                             class="p-2 px-3 bg-[#0d1117] border border-solid border-white/20 rounded-lg text-white focus:bg-transparent focus:outline-blue-500 focus:outline-2">
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
+                                <option class="bg-[#151b23] text-white" value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
                                     {{ $category->title }}
                                 </option>
                             @endforeach
