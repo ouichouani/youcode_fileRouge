@@ -23,6 +23,8 @@
         </section>
     </div>
 
+    @stack('scripts')
+
 
 </body>
 

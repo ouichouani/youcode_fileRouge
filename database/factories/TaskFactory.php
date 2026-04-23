@@ -21,7 +21,7 @@ class TaskFactory extends Factory
     {
 
         $user = User::inRandomOrder()->first() ?? User::factory()->create();
-        $category = Category::inRandomOrder()->first();
+        $category = Category::where('user_id' , $user->id)->inRandomOrder()->first();
 
         return [
             'title' => fake()->sentence(),
@@ -31,11 +31,12 @@ class TaskFactory extends Factory
             'deadline' => fake()->dateTime('2026-12-20'),
             'done' => false,
             'streaks' => fake()->numberBetween(0, 365),
-            'frequency' =>  fake()->randomElements(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], fake()->numberBetween(1, 7)),
+            'frequency' =>  ['OneTime'] ,
+            // 'frequency' =>  fake()->randomElements(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], fake()->numberBetween(1, 7)),
             // 'frequency' => fake()->boolean(30) ? ['OneTime'] : fake()->randomElements(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "OneTime"], fake()->numberBetween(1, 7)),
             'category_id' => $category?->id,
-            'user_id' => $user->id
-            // 'user_id' => 1,
+            'user_id' => $user->id ,
+            'is_task' => true ,
         ];
     }
 }

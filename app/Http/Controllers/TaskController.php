@@ -12,17 +12,28 @@ class TaskController extends Controller
 {
 
 
+
     public function index()
     {
-        $tasks = Task::where('is_task' , true)->where('user_id' , Auth::id())->latest()->get() ;
-        return view('tasks.tasks.index' , compact('tasks')) ;
-    }
+        $user = Auth::user();
 
-    // public function habits()
-    // {
-    //     $habits = Task::where('is_task' , false)->where('user_id' , Auth::id())->latest()->get() ;
-    //     return view('tasks.habits.index' , compact('habits')) ;
-    // }
+        $categories = Category::where(
+            function ($q) use ($user) {
+                $q->where('user_id', $user->id)->orWhere('is_global', true);
+            }
+        )->whereHas('tasks', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })
+
+        ->with(['tasks' => function ($q) use ($user) {
+                $q->where('user_id', $user->id)->orderBy('done');
+        }])
+        ->orderBy('id')
+        ->get();
+
+
+        return view('tasks.tasks.index', compact('user', "categories"));
+    }
 
 
     public function create()
@@ -75,6 +86,16 @@ class TaskController extends Controller
     {
         $this->authorize('delete' , $task) ;
         $task->delete() ;
+        return redirect()->route('tasks.index') ;
+
+    }
+
+
+    public function done (Task $task){
+
+        $this->authorize('update' , $task) ;
+        $task->done = !$task->done ;
+        $task->save() ;
         return redirect()->route('tasks.index') ;
 
     }

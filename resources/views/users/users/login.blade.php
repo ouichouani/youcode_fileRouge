@@ -18,15 +18,15 @@
         <div class="flex h-full items-center">
 
             <section class="h-[50%] w-[50%] pl-[10vw] flex flex-col gap-8 border-r border-solid border-white/30">
-                <h1 class="text-[4em] font-bold">WELCOM BACK</h1>
-                <p class="text-[#9198a1] pl-[10px] w-[80%] ">Great to see you again! Your habits define your future, and
+                <h1 class="text-[3.3em] font-bold">BACK IN ACTION</h1>
+                <p class="text-[#9198a1] pl-[10px] w-[90%] ">Great to see you again! Your habits define your future, and
                     you’ve just made the best choice of the day by showing up for yourself. Ready to tick off some goals
                     and crush your streaks? Let’s get to work!</p>
             </section>
 
             <section class="h-[70%] w-[50%] flex justify-center items-center ">
-                <div class="w-[50%] h-fit">
-                <h1 class="text-[2em] font-bold mb-10">Login</h1>
+                <div class="w-[60%] h-fit">
+                <h1 class="text-[2em] font-bold mb-10">LOGIN</h1>
 
                 @if (session('error'))
                     <div style="color: red; margin-bottom: 12px;">
@@ -58,7 +58,7 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="p-1 w-[50%] m-auto bg-[#151b23] border border-solid border-white/20 rounded-lg hover:bg-green-500/20 " >Login</button>
+                    <button type="submit" class="p-1 w-[50%] m-auto bg-[#151b23] border border-solid border-white/20 rounded-lg hover:bg-green-500/20 " >Let's go</button>
                 </form>
 
                 <p class="text-center mt-5 text-[#9198a1]">
@@ -67,6 +67,7 @@
                 </p>
                 </div>
             </section>
+            
         </div>
 
 

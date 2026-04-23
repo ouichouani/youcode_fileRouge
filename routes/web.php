@@ -56,8 +56,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/likes', [LikeController::class, 'save'])->name('likes.save');
 
-    Route::post('/tasks/done', [LogController::class, 'store'])->name('logs.store')->missing(function () {return redirect()->route('dashboard')->with('message', 'resource not found');});
-    Route::delete('/tasks/{log}/destroy', [LogController::class, 'destroy'])->name('logs.destroy')->missing(function () {return redirect()->route('dashboard')->with('message', 'resource not found');});
+    Route::post('/tasks/{task}/done', [TaskController::class, 'done'])->name('tasks.done')->missing(function () {return redirect()->route('tasks.index')->with('message', 'resource not found');});
+    
+    Route::post('/habits/done', [LogController::class, 'store'])->name('logs.store')->missing(function () {return redirect()->route('dashboard')->with('message', 'resource not found');});
+    Route::delete('/habits/{log}/destroy', [LogController::class, 'destroy'])->name('logs.destroy')->missing(function () {return redirect()->route('dashboard')->with('message', 'resource not found');});
 
     route::group(['prefix' => 'moderator'], function () {
         Route::get('users', [ModeratorController::class, 'index'])->name('moderator.users.index') ;

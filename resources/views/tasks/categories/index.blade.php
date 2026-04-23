@@ -31,16 +31,20 @@
 @section('content')
     <div class="relative w-full pt-15">
 
-        @can('accessGlobalCategories', App\Models\Category::class)
-            <a class="absolute top-[0px] right-[0px] p-2 bg-[#151b23] border border-solid border-white/30 rounded-lg"
-                href="{{ route('categories.create') }}">add global category</a>
-        @endcan
+        <div class="flex gap-3 absolute top-[0px] right-[0px]">
+            @can('accessGlobalCategories', App\Models\Category::class)
+            <a class="p-2 bg-[#151b23] border border-solid border-white/30 rounded-lg transition hover:border-white/60"
+            href="{{ route('categories.create') }}">add global category</a>
+            @endcan
+            <a class="p-2 bg-[#151b23] border border-solid border-white/30 rounded-lg transition hover:border-white/60"
+            href="{{ route('categories.create') }}">add private category</a>
+        </div>
 
         <section class="flex flex-col gap-3">
 
             <section class='border border-white/30 border-solid rounded-lg p-[20px] flex flex-col gap-15 '>
                 <div class="flex flex-col gap-5">
-                    <h2 class="text-3xl font-bold">Global categories</h2>
+                    <h2 class="text-3xl font-bold">Private categories</h2>
                     <p class="text-[#9198a1] pl-[10px] w-[80%]">this section is visible only tho the you , no one can see
                         your categories and no one can modify them . </p>
                 </div>
