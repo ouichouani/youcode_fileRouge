@@ -43,7 +43,7 @@ class CategoryController extends Controller
                 $query->where('user_id', Auth::id());
             },
             'tasks' => function ($query) {
-                $query->where('user_id', Auth::id());
+                $query->where('user_id', Auth::id())->orderBy('done');;
             }
         ]);
 
@@ -80,7 +80,7 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        $destination = 'categorie.index' ;
+        $destination = 'categories.index' ;
         if ($category->is_global) {
             $this->authorize('accessGlobalCategories', Category::class);
             $destination = 'categories.global' ;

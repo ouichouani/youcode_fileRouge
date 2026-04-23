@@ -96,7 +96,8 @@ class TaskController extends Controller
         $this->authorize('update' , $task) ;
         $task->done = !$task->done ;
         $task->save() ;
-        return redirect()->route('tasks.index') ;
+        // return redirect()->route('tasks.index') ;
+        return redirect()->back() ;
 
     }
 

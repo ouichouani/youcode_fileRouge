@@ -32,12 +32,8 @@
     <div class="relative w-full pt-15">
 
         <div class="flex gap-3 absolute top-[0px] right-[0px]">
-            @can('accessGlobalCategories', App\Models\Category::class)
             <a class="p-2 bg-[#151b23] border border-solid border-white/30 rounded-lg transition hover:border-white/60"
-            href="{{ route('categories.create') }}">add global category</a>
-            @endcan
-            <a class="p-2 bg-[#151b23] border border-solid border-white/30 rounded-lg transition hover:border-white/60"
-            href="{{ route('categories.create') }}">add private category</a>
+            href="{{ route('categories.create') }}">add category</a>
         </div>
 
         <section class="flex flex-col gap-3">
@@ -52,11 +48,15 @@
                 <div class="flex flex-col gap-7">
                     @forelse ($categories as $c)
                         @if (!$c->is_global)
-                            <a href='{{ route('categories.show', $c->id) }}'>
-                                <div
-                                    class="w-[5px] h-[5px] bg-[{{ $c->color }}] rounded-full border border-solid border-white">
-                                </div>{{ $c->title }}</p>
-                                <p class="text-[#9198a1] w-[80%] pl-[10px]">&emsp;{{ $c->description }} </p>
+                            <div class="flex flex-col gap-3">
+                                    <a href='{{ route('categories.show', $c->id) }}' class='flex items-center gap-2'>
+                                        <div
+                                            class="w-[12px] h-[12px] bg-[{{ $c->color }}] rounded-full border border-solid border-white">
+                                        </div>
+                                        <p>{{ $c->title }}</p>
+                                    </a>
+                                    <p class="text-[#9198a1] w-[80%] pl-[10px]">&emsp;{{ $c->description }} </p>
+                                </div>
                         @endif
                     @empty
                         <p>no categories created yet</p>

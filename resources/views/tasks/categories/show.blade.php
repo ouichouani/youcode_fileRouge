@@ -46,42 +46,50 @@
         </div>
     </div>
 
-    <div class="grid gap-6 lg:grid-cols-2">
-        <section class="rounded-2xl border border-white/10 bg-[#151b23] p-6 shadow-lg">
-            <div class="mb-6 flex flex-col gap-2">
+    <div class="flex flex-col gap-6">
+        <section class="rounded-2xl border border-white/10 shadow-lg">
+            <div class="mb-6 flex flex-col gap-2 bg-[#151b23] w-full p-6 rounded-2xl">
                 <h3 class="text-2xl font-bold text-white">Tasks</h3>
                 <p class="text-sm text-[#9198a1]">All tasks linked to this category.</p>
             </div>
 
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1 p-6 ">
                 @forelse ($tasks as $task)
-                    <article class="rounded-xl border border-white/10 bg-[#0d1117] p-4">
-                        <h4 class="text-lg font-semibold text-white">{{ $task->title }}</h4>
-                        <p class="mt-2 text-sm leading-6 text-[#9198a1]">{{ $task->description }}</p>
+                    <article class="rounded-xl borderr border-white/10 bg-[#0d1117]">
+                        <form class="flex items-center gap-3" action="{{ route('tasks.done', $task->id) }}" method="POST">
+                            @csrf
+                            <input type="checkbox" class="task_done cursor-pointer" {{ $task->done ? 'checked' : '' }}>
+                            <a href='{{ route('tasks.show', $task->id) }}' class='flex-1'>
+                                <p class="font-bold text-lg text-white {{ $task->done ? 'line-through text-[#9198a1]' : '' }}">
+                                    {{ $task->title }}
+                                </p>
+                            </a>
+                        </form>
                     </article>
                 @empty
-                    <p class="rounded-xl border border-dashed border-white/15 bg-[#0d1117] px-4 py-5 text-sm text-[#9198a1]">
+                    <p class="bg-[#0d1117] px-4 py-1 text-sm text-[#9198a1]">
                         this cat doesn't have any tasks
                     </p>
                 @endforelse
             </div>
         </section>
 
-        <section class="rounded-2xl border border-white/10 bg-[#151b23] p-6 shadow-lg">
-            <div class="mb-6 flex flex-col gap-2">
+        <section class="rounded-2xl border border-white/10">
+            <div class="mb-6 flex flex-col gap-2 bg-[#151b23] w-full p-6 rounded-2xl">
                 <h3 class="text-2xl font-bold text-white">Habits</h3>
                 <p class="text-sm text-[#9198a1]">All habits linked to this category.</p>
             </div>
 
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1 p-6 ">
                 @forelse ($habits as $habit)
-                    <article class="rounded-xl border border-white/10 bg-[#0d1117] p-4">
-                        <h4 class="text-lg font-semibold text-white">{{ $habit->title }}</h4>
-                        <p class="mt-2 text-sm leading-6 text-[#9198a1]">{{ $habit->description }}</p>
+                    <article class="rounded-xl borderr border-white/10 bg-[#0d1117]">
+                        <a href="{{ route('habits.show' , $habit->id) }}">
+                            <h4 class="text-lg font-semibold text-white">&emsp; - {{ $habit->title }}</h4>
+                        </a>
                     </article>
                 @empty
-                    <p class="rounded-xl border border-dashed border-white/15 bg-[#0d1117] px-4 py-5 text-sm text-[#9198a1]">
-                        this cat doesn't have any habits
+                    <p class="bg-[#0d1117] px-4 py-1 text-sm text-[#9198a1]">
+                        this category doesn't have any habits
                     </p>
                 @endforelse
             </div>
@@ -89,3 +97,14 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+    <script>
+        let check = document.querySelectorAll(".task_done");
+        check.forEach(c => {
+            c.addEventListener('change', function() {
+                this.form.submit();
+            })
+        });
+    </script>
+@endpush
