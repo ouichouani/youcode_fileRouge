@@ -22,7 +22,7 @@ class TaskController extends Controller
                 $q->where('user_id', $user->id)->orWhere('is_global', true);
             }
         )->whereHas('tasks', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
+            $q->where('user_id', $user->id) ;
         })
 
         ->with(['tasks' => function ($q) use ($user) {
@@ -47,7 +47,7 @@ class TaskController extends Controller
     {
         $data  = $request->validated() ;
         $data['user_id'] = Auth::id() ;
-        $data['is_task'] = true;
+        $data['is_task'] = true ;
         $data['frequency'] = ['OneTime'] ;
         $task = Task::create($data) ;
         return  redirect()->route('tasks.show' , $task->id) ;

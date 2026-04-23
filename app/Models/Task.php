@@ -21,7 +21,8 @@ class Task extends Model
         'streaks',
         'frequency',
         'category_id',
-        'user_id'
+        'user_id',
+        'is_task'
     ];
 
 
