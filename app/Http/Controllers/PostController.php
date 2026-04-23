@@ -13,9 +13,9 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::query()->with(['comments', 'likes', 'user.image:path', 'images', 'reports' => function ($q) {
+        $posts = Post::query()->with(['comments', 'likes', 'user.image', 'images', 'reports' => function ($q) {
             $q->where('user_id', Auth::id());
-        }])->get();
+        }])->latest()->get();
 
         return view('posts.index', compact('posts'));
     }

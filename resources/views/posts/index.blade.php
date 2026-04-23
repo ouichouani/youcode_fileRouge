@@ -42,8 +42,15 @@
             ----------
             <a href="{{ route('users.show', $post->user->id) }}">
                 <h1>{{ $post->user->name }}</h1>
+                <img class ="w-[50px] bg-red-500" src="{{ asset('storage/' . $post->user->image?->path) }}" alt="">
             </a>
             <p>{{ $post->content }}</p>
+            @if (count($post->images))
+                
+            @foreach ( $post->images as $img )
+                <img class="max-w-[200px]" src="{{ asset('storage/' . $img->path) }}" alt="">
+            @endforeach
+            @endif
             <p>{{ $post->type }}</p>
             <p>{{ count($post->likes) }}</p>
             <p>------comments--------</p>
