@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -14,12 +15,14 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
+
         $post = Post::findOrFail($request->post_id) ;
         $this->authorize('create' , [Comment::class , $post]) ;
-
-        $validated = $request->validated() ;
-        $comment = Comment::create($validated) ;
-        return redirect()->route('posts.show' , $comment->post_id)->with('message' , 'comment added successfully') ;
+        $data = $request->validated() ;
+        $data['user_id'] = Auth::id() ;
+        Comment::create($data) ;
+        return redirect()->back() ;
+        // return redirect()->route('posts.show' , $comment->post_id)->with('message' , 'comment added successfully') ;
     }
 
     /**
@@ -29,6 +32,7 @@ class CommentController extends Controller
     {
         $this->authorize('delete', $comment);
         $comment->delete() ;
-        return redirect()->route('posts.show' , $comment->post_id)->with('message' , 'comment deleted successfully') ;
+        return redirect()->back() ;
+        // return redirect()->route('posts.show' , $comment->post_id)->with('message' , 'comment deleted successfully') ;
     }
 }

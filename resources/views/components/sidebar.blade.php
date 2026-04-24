@@ -14,16 +14,16 @@
         <a class="rounded-lg px-2 py-2 transition hover:bg-[#212830] flex gap-2"
             href='{{ route('notifications.index') }}'><img class='w-[20px] fill-white/50 hover:fill-white' src="{{ asset('svg/notification.svg') }}" alt=""> notification</a>
 
+        <a class="rounded-lg px-2 py-2 transition hover:bg-[#212830] flex gap-2"
+            href='{{ route('requests.index') }}'><img class='w-[25px] fill-white/50 hover:fill-white' src="{{ asset('svg/requests.svg') }}" alt=""> requests</a>
+
         @can('manage_app', App\Models\User::class)
         <a class="rounded-lg px-2 py-2 transition hover:bg-[#212830] flex gap-2"
                 href='{{ route('blackList') }}'><img class='w-[20px] fill-white/50 hover:fill-white' src="{{ asset('svg/settings.svg') }}" alt=""> controll panel</a>
         @endcan
+
+        <a class="rounded-lg px-2 py-2 transition hover:bg-[#212830] flex gap-2"
+                href='{{ route('blackList') }}'><img class='w-[20px] fill-white/50 hover:fill-white' src="{{ asset('svg/settings.svg') }}" alt=""> about</a>
     </ul>
 </aside>
 
-{{-- 
-bg-gradient-to-b = gradient to bottom '-b'
-shadow-2xl = box shadow
-tracking-wide = letter-spacing
-rounded-xl = border radius
---}}

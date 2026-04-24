@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::query()->with(['comments', 'likes', 'user.image', 'images', 'reports' => function ($q) {
+        $posts = Post::query()->with(['comments.user.image' , 'comments.post', 'likes', 'user.image', 'images', 'reports' => function ($q) {
             $q->where('user_id', Auth::id());
         }])->latest()->get();
 

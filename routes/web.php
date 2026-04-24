@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
     route::group(['prefix' => 'admin'], function () {
         Route::get('users', [AdminController::class, 'index'])->name('admin.users.index') ;
         Route::post('users/{user}/ban', [AdminController::class, 'ban'])->name('admin.users.ban')->missing(function () {return redirect()->route('admin.dashboard')->with('message', 'resource not found');});
-        Route::post('post/{post}/hide', [AdminController::class, 'hidePost'])->name('moderator.posts.hide');
+        Route::post('post/{post}/hide', [AdminController::class, 'hidePost'])->name('admin.posts.hide');
     });
 
     route::group(['prefix' => 'controll-panel'] , function(){
