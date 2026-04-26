@@ -13,7 +13,7 @@ class ModeratorController extends UserController
     public function ban(User $user)
     {
 
-        $this->authorize('temp_ban');
+        $this->authorize('temp_ban' , User::class );
 
         // add the constraint (moderator can ban only thoes who he did ban befor , not other's banned users) : required changes on users table or new table ;
 
@@ -70,7 +70,7 @@ class ModeratorController extends UserController
     public function showHiddenPosts(){
 
         $this->authorize('manage_app' , User::class);
-        $posts = Post::where('is_hidden' , true)->with('user.image:path,id')->get() ;
+        $posts = Post::where('is_hidden' , true)->with(['user.image' , 'comments.user.image' , 'comments.post', 'likes', 'user.image', 'images', 'reports'])->latest()->get() ;
         return view('posts.index' , compact('posts')) ;  
         
     }

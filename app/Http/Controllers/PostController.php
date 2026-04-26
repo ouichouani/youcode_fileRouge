@@ -15,7 +15,12 @@ class PostController extends Controller
     {
         $posts = Post::query()->with(['comments.user.image' , 'comments.post', 'likes', 'user.image', 'images', 'reports' => function ($q) {
             $q->where('user_id', Auth::id());
-        }])->latest()->get();
+        }])->whereHas('user' , function($q){
+            $q->where('is_banned' , false)->where('is_banned_by_moderator' , false) ;
+        })
+        ->where('is_hidden' , false)
+        ->where('visibility' , '<>' , 'private')
+        ->latest()->get();
 
         return view('posts.index', compact('posts'));
     }
@@ -66,7 +71,9 @@ class PostController extends Controller
         $post->update($data);
         if(isset($data['images'])) Image::storeMultiple($post, 'posts', $data['images']);
 
-        return redirect()->route('posts.show', $post)->with('message', 'Post updated successfully');
+        // return redirect()->back() ;
+        // return redirect()->route('posts.show', $post)->with('message', 'Post updated successfully');
+        return redirect()->route('users.profile')->with('message', 'Post updated successfully');
     }
 
     public function destroy(Post $post)

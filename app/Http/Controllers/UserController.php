@@ -85,7 +85,10 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('index', User::class);
-        $users = User::where('role', '<>', 'Admin')->where('role', '<>', 'Moderator')->with('image:path')->orderBy('email')->get();
+        $users = User::with('image')
+        ->where('is_banned' , false)
+        ->where('is_banned_by_moderator' , false)
+        ->orderBy('email')->get();
         return view('users.users.index',  compact('users'));
     }
 
@@ -100,6 +103,9 @@ class UserController extends Controller
         if (!$user) return redirect()->route('login')->with('error', 'Please login to view your profile');
 
         $user->load([
+            'posts' => function($q){
+                $q->latest() ;
+            } ,
             'posts.comments',
             'posts.likes',
             'posts.images:path,imageable_id',
@@ -152,8 +158,9 @@ class UserController extends Controller
         $posts = $data['posts'];
         $sentRequests = $data['sentRequests'];
         $receivedRequests = $data['receivedRequests'];
+        $isFriend = true ;
 
-        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests'));
+        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests' , 'isFriend'));
     }
 
     public function show(int $id)
@@ -171,7 +178,11 @@ class UserController extends Controller
             $query->where('sender_id', $user->id)->where('receiver_id', Auth::id())->where('status', 'pending');
         })->get()->first();
 
-
+        $isFriend = FriendRequest::where(function ($query) use ($user) {
+            $query->where('sender_id', Auth::id())->where('receiver_id', $user->id)->where('status', 'accepted');
+        })->orWhere(function ($query) use ($user) {
+            $query->where('sender_id', $user->id)->where('receiver_id', Auth::id())->where('status', 'accepted');
+        })->exists();
 
         $data = $this->loadRelationsforShow($user);
         $posts = $data['posts'];
@@ -180,7 +191,7 @@ class UserController extends Controller
 
 
 
-        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests', 'pendingRequest'));
+        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests', 'pendingRequest' , 'isFriend'));
     }
 
     public function edit($id)
@@ -207,7 +218,7 @@ class UserController extends Controller
             }
 
             $user->update($data);
-            $image = $data['image'];
+            $image = isset($data['image']) ? $data['image'] : null ;
             if (isset($image) && $image instanceof \Illuminate\Http\UploadedFile) {
                 Image::store($user, 'users', $image);
             }
@@ -215,6 +226,7 @@ class UserController extends Controller
 
             return redirect()->route('users.show', $user->id)->with('success', 'User updated successfully.');
         } catch (Exception $e) {
+            dd($e->getMessage()) ;
             return redirect()->back()->with('error', $e->getMessage());
         }
     }

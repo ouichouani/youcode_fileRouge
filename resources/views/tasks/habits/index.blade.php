@@ -14,7 +14,7 @@
 @endsection
 
 @section('content')
-
+<section class="mx-auto w-full max-w-6xl px-4 py-6">
     <div class="relative w-full pt-15">
         <div class="flex gap-3 absolute top-[0px] right-[0px]">
             <a class="p-2 bg-[#151b23] border border-solid border-white/30 rounded-lg transition hover:border-white/60"
@@ -86,4 +86,5 @@
         @endif
 
     </div>
+</section>
 @endsection

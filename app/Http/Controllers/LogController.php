@@ -6,6 +6,7 @@ use App\Http\Requests\StorelogRequest;
 use App\Models\Log;
 use App\Models\Task;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -18,11 +19,29 @@ class LogController extends Controller
 
     public function index()
     {
-        // show the history of the task
-        $logs = Log::whereHas('task' , function($q){
-            $q->where('user_id' , Auth::id()) ;
-        })->with('task')->get() ;
-        return view('tasks.logs.index' , compact('logs')) ;
+        $habits = Task::where('user_id', Auth::id())
+            ->where('is_task', false)
+            ->with([
+                'logs' => fn($query) => $query->orderBy('completed_date'),
+            ])
+            ->orderBy('created_at')
+            ->get();
+
+        $oldestHabit = $habits->first();
+
+        $months = collect();
+
+        if ($oldestHabit) {
+            $months = collect(
+                CarbonPeriod::create(
+                    $oldestHabit->created_at->copy()->startOfMonth(),
+                    '1 month',
+                    now()->copy()->startOfMonth(),
+                )
+            )->reverse()->values();
+        }
+
+        return view('tasks.logs.index', compact('habits', 'oldestHabit', 'months'));
     }
 
 

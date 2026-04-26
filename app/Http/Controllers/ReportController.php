@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
+use App\Models\Post;
 use App\Models\Report;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,29 +14,39 @@ class ReportController extends Controller
 
     public function index()
     {
+        // $this->authorize('viewAny', Report::class);
+
+        // $reports = Report::query()->with([
+        //     'user:id,name,email',
+        //     'post.user:id,name,email',
+        //     'post.user.image',
+
+        //     'post.images',
+        //     'user.image',
+
+        //     'post.comments.user:id,name,email',
+        //     'post.comments.user.image',
+
+        // ])->latest();
+
         $this->authorize('viewAny', Report::class);
 
-        $reports = Report::query()->with([
-            'user:id,name,email',
-            'post.user:id,name,email',
-            'post.user.image',
-
-            'post.images',
+        $posts = Post::with([
             'user.image',
-
-            'post.comments.user:id,name,email',
-            'post.comments.user.image',
-
-        ])->latest();
+            'reports.user.image' ,
+            'images',
+            'comments.user.image',
+        ])->where('is_hidden' , false)
+        ->latest();
         
         if(Auth::user()->role == 'Admin'){
-            $reports = $reports->where('is_confirmed' , true) ;
+            $posts = $posts->whereHas('reports' , function($q){ $q->where('is_confirmed' , true); })->with('reports' , function($q){ $q->where('is_confirmed' , true); }) ;
         }else{
-             $reports = $reports->where('is_confirmed' , false) ;
+            $posts = $posts->whereHas('reports' , function($q){ $q->where('is_confirmed' , false); })->with('reports' , function($q){ $q->where('is_confirmed' , false); }) ;
         }
 
-        $reports = $reports->get() ;
-        return view('reports.index', compact('reports'));
+        $posts = $posts->get() ;
+        return view('reports.index', compact('posts'));
     }
 
 

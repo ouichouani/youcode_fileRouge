@@ -11,7 +11,7 @@ class FriendRequestController extends Controller
     
     public function index()
     {
-        $friendRequests = FriendRequest::Where('receiver_id', Auth::id())->with(['sender:id,name' , 'sender.image.path'])->get();
+        $friendRequests = FriendRequest::Where('receiver_id', Auth::id())->with(['sender' , 'sender.image'])->get();
         return view('users.requests.index', compact('friendRequests'));
     }
 
