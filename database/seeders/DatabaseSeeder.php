@@ -52,11 +52,11 @@ class DatabaseSeeder extends Seeder
         // User::factory(20)->create();
         // Category::factory(20)->create();
         // Task::factory(10)->create();
-        Task::factory(100)->create();
+        // Task::factory(100)->create();
         // Post::factory(100)->create();
         // Like::factory(200)->create();
         // Comment::factory(200)->create();
-        // Report::factory(5)->create();
+        Report::factory(10)->create();
         // FriendRequest::factory(100)->create();
         // Log::factory(90)->create();
 

@@ -11,8 +11,8 @@
         <a class="rounded-lg px-2 py-2 transition hover:bg-[#212830] flex gap-2 {{ request()->routeIs(['users.edit' , 'users.profile' , 'posts.edit' , 'users.show']) ? 'bg-[#212830] border-l-4 rounded-l-none border-blue-500' : '' }}"
             href='{{ route('users.profile') }}'><img class='w-[20px] fill-white/50 hover:fill-white' src="{{ asset('svg/profile.svg') }}" alt=""> profile</a>
             
-        <a class="rounded-lg px-2 py-2 transition hover:bg-[#212830] flex gap-2 {{ request()->routeIs(['notifications.index']) ? 'bg-[#212830] border-l-4 rounded-l-none border-blue-500' : '' }}"
-            href='{{ route('notifications.index') }}'><img class='w-[20px] fill-white/50 hover:fill-white' src="{{ asset('svg/notification.svg') }}" alt=""> notification</a>
+        {{-- <a class="rounded-lg px-2 py-2 transition hover:bg-[#212830] flex gap-2 {{ request()->routeIs(['notifications.index']) ? 'bg-[#212830] border-l-4 rounded-l-none border-blue-500' : '' }}"
+            href='{{ route('notifications.index') }}'><img class='w-[20px] fill-white/50 hover:fill-white' src="{{ asset('svg/notification.svg') }}" alt=""> notification</a> --}}
 
         <a class="rounded-lg px-2 py-2 transition hover:bg-[#212830] flex gap-2 {{ request()->routeIs(['requests.index']) ? 'bg-[#212830] border-l-4 rounded-l-none border-blue-500' : '' }}"
             href='{{ route('requests.index') }}'><img class='w-[25px] fill-white/50 hover:fill-white' src="{{ asset('svg/requests.svg') }}" alt=""> requests</a>

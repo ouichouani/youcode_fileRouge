@@ -11,13 +11,13 @@
 @if (request()->routeIs(['categories.global']))
     @if (auth()->user()->role == 'Admin' || auth()->user()->role == 'Moderator')
         @section('nav')
-            @can('ban', App\Models\User::class)
-                <a href="{{ route('blackList') }}">black list</a>
-                <a href="{{ route('users.index') }}">active users</a>
-                <a href="{{ route('categories.global') }}">categories</a>
-            @endcan
-            <a href="{{ route('posts.hidden') }}">posts</a>
-            <a href="{{ route('reports.index') }}">reports</a>
+        <a href="{{ route('blackList') }}">black list</a>
+        <a href="{{ route('users.index') }}">active users</a>
+        <a href="{{ route('posts.hidden') }}">posts</a>
+        <a href="{{ route('reports.index') }}">reports</a>
+        @can('ban', App\Models\User::class)
+        <a href="{{ route('categories.global') }}">categories</a>
+        @endcan
         @endsection
     @endif
 @else

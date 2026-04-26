@@ -81,6 +81,12 @@ class UserController extends Controller
 
     // CRUD methods
 
+    public function search($query , $like){
+        return $query->where(function($q) use($like){
+            $q->where('name' , "like" ,"%$like%")->orWhere('email' , 'like', "%$like%") ;
+        });
+    }
+
 
     public function index()
     {
@@ -88,7 +94,14 @@ class UserController extends Controller
         $users = User::with('image')
         ->where('is_banned' , false)
         ->where('is_banned_by_moderator' , false)
-        ->orderBy('email')->get();
+        ->orderBy('email');
+
+        $like = request()->query('like') ;
+
+        if($like) $users = $this->search($users , $like) ;
+
+        $users = $users->get();
+
         return view('users.users.index',  compact('users'));
     }
 

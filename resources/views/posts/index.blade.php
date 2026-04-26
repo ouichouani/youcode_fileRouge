@@ -12,37 +12,39 @@
 @if (request()->routeIs(['posts.hidden']))
     @if (auth()->user()->role == 'Admin' || auth()->user()->role == 'Moderator')
         @section('nav')
-            @can('ban', App\Models\User::class)
-                <a href="{{ route('blackList') }}">black list</a>
-                <a href="{{ route('users.index') }}">active users</a>
-                <a href="{{ route('categories.global') }}">categories</a>
-            @endcan
+            <a href="{{ route('blackList') }}">black list</a>
+            <a href="{{ route('users.index') }}">users</a>
             <a href="{{ route('posts.hidden') }}">posts</a>
             <a href="{{ route('reports.index') }}">reports</a>
+            @can('ban', App\Models\User::class)
+                <a href="{{ route('categories.global') }}">categories</a>
+            @endcan
         @endsection
     @endif
 @endif
 
 
 
+
+
 @section('content')
     <section class="mx-auto w-full max-w-6xl px-4 py-6">
 
-    @if (request()->routeIs(['posts.hidden']))
-        <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">
-            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                    <h2 class="text-xl font-bold tracking-wide text-white">hidden posts</h2>
-                    <p class="mt-2 text-sm text-[#9198a1]">
-                        Review hidden posts.
-                    </p>
-                </div>
-                <div class="rounded-xl border border-white/10 bg-[#0d1117] px-4 py-3">
-                    <p class="text-xs uppercase tracking-[0.2em] text-[#9198a1]">Total posts</p>
-                    <p class="mt-2 text-lg font-semibold text-white">{{ count($posts) }}</p>
+        @if (request()->routeIs(['posts.hidden']))
+            <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">
+                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold tracking-wide text-white">hidden posts</h2>
+                        <p class="mt-2 text-sm text-[#9198a1]">
+                            Review hidden posts.
+                        </p>
+                    </div>
+                    <div class="rounded-xl border border-white/10 bg-[#0d1117] px-4 py-3">
+                        <p class="text-xs uppercase tracking-[0.2em] text-[#9198a1]">Total posts</p>
+                        <p class="mt-2 text-lg font-semibold text-white">{{ count($posts) }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
         @endif
 
         <div class="flex flex-col gap-6">
@@ -68,7 +70,8 @@
                                     @can('store', App\Models\Report::class)
                                         @if (auth()->user()->id != $post->user_id)
                                             <a href="{{ route('reports.create', ['post' => $post->id]) }}">
-                                                <svg width="25px" height="25px" viewBox="0 0 48 48" version="1.1" title="report" class="text-[#848b93] hover:text-red-500"
+                                                <svg width="25px" height="25px" viewBox="0 0 48 48" version="1.1"
+                                                    title="report" class="text-[#848b93] hover:text-red-500"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
 
@@ -111,7 +114,7 @@
                                         @endif
                                     @endcan
 
-                                    @can('hide' , $post)
+                                    @can('hide', $post)
                                         <form action="{{ route('posts.hide', $post) }}" method="POST"
                                             class="flex items-center">
                                             @csrf

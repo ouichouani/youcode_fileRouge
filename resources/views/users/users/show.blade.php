@@ -15,8 +15,9 @@
                     <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
 
                         <div class="flex flex-1 items-start gap-5">
-                            <div class="flex justify-between items-center w-full flex-wrap ">
-                                <div class="flex gap-20 items-center min-w-[300px]  ">
+
+                            <div class="flex justify-between items-center w-full flex-wrap">
+                                <div class="flex gap-20 items-center min-w-[300px] max-w-[70%]">
                                     <div class="flex gap-4 items-center">
 
                                         <img src="{{ asset($user?->image?->path ? 'storage/' . $user?->image?->path : 'images/blank-profile.webp') }}"
@@ -58,6 +59,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

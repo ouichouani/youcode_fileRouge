@@ -60,10 +60,15 @@ class ModeratorController extends UserController
         $users = null;
 
         if (Auth::user()->role != 'Admin') {
-            $users = User::where('is_banned_by_moderator' , true)->where('is_banned' , false)->get();
+            $users = User::where('is_banned_by_moderator' , true)->where('is_banned' , false) ;
         } else {
-            $users = User::where('is_banned_by_moderator' , true)->orWhere('is_banned' , true)->get();
+            $users = User::where('is_banned_by_moderator' , true)->orWhere('is_banned' , true) ;
         }
+
+        $like = request()->query('like') ;
+        if($like) $users = $this->search($users , $like) ;
+        $users = $users->get();
+        
         return view('users.users.index', compact('users'));
     }
 
