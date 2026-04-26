@@ -159,10 +159,13 @@
                 </div>
             </div>
         </div>
-
+        
         <section class="rounded p-6">
             <div class="mb-6 flex items-center justify-between gap-4">
-                <h3 class="text-xl font-bold text-white">Posts</h3>
+                <a title='add post' href='{{ route('posts.create') }}' 
+                    class="rounded-full border border-white/20 bg-[#0d1117] w-10 h-10 text-sm font-medium text-white transition hover:border-white/50 cursor-pointer flex items-center justify-center">
+                    <span>+</span>
+            </a>
             </div>
 
             <div class="flex flex-col gap-6">

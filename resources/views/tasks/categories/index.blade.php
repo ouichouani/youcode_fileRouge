@@ -8,25 +8,29 @@
     @endif
 @endsection
 
-@section('nav')
-    <a href='{{ route('dashboard') }}'>board</a>
-    <a href='{{ route('habits.index') }}'>habits</a>
-    <a href='{{ route('tasks.index') }}'>tasks</a>
-    <a href='{{ route('logs.index') }}'>historie</a>
-    <a href='{{ route('categories.index') }}'>categories</a>
-@endsection
-
-@if (auth()->user()->role == 'Admin' || auth()->user()->role == 'Moderator')
+@if (request()->routeIs(['categories.global']))
+    @if (auth()->user()->role == 'Admin' || auth()->user()->role == 'Moderator')
+        @section('nav')
+            @can('ban', App\Models\User::class)
+                <a href="{{ route('blackList') }}">black list</a>
+                <a href="{{ route('users.index') }}">active users</a>
+                <a href="{{ route('categories.global') }}">categories</a>
+            @endcan
+            <a href="{{ route('posts.hidden') }}">posts</a>
+            <a href="{{ route('reports.index') }}">reports</a>
+        @endsection
+    @endif
+@else
     @section('nav')
-        @can('ban', App\Models\User::class)
-            <a href="{{ route('blackList') }}">black list</a>
-            <a href="{{ route('users.index') }}">active users</a>
-            <a href="{{ route('categories.global') }}">global categories</a>
-        @endcan
-        <a href="{{ route('posts.hidden') }}">hidden posts</a>
-        <a href="{{ route('reports.index') }}">reports</a>
+        <a href='{{ route('dashboard') }}'>board</a>
+        <a href='{{ route('habits.index') }}'>habits</a>
+        <a href='{{ route('tasks.index') }}'>tasks</a>
+        <a href='{{ route('categories.index') }}'>categories</a>
+        <a href='{{ route('logs.index') }}'>historie</a>
     @endsection
 @endif
+
+
 
 @section('content')
     <section class="mx-auto w-full max-w-6xl px-4 py-6">
@@ -38,34 +42,35 @@
             </div>
 
             <section class="flex flex-col gap-3">
+                @if (!request()->routeIs(['categories.global']))
+                    <section class='border border-white/30 border-solid rounded-lg p-[20px] flex flex-col gap-15 '>
+                        <div class="flex flex-col gap-5">
+                            <h2 class="text-3xl font-bold">Private categories</h2>
+                            <p class="text-[#9198a1] pl-[10px] w-[80%]">this section is visible only tho the you , no one
+                                can
+                                see
+                                your categories and no one can modify them . </p>
+                        </div>
 
-                <section class='border border-white/30 border-solid rounded-lg p-[20px] flex flex-col gap-15 '>
-                    <div class="flex flex-col gap-5">
-                        <h2 class="text-3xl font-bold">Private categories</h2>
-                        <p class="text-[#9198a1] pl-[10px] w-[80%]">this section is visible only tho the you , no one can
-                            see
-                            your categories and no one can modify them . </p>
-                    </div>
-
-                    <div class="flex flex-col gap-7">
-                        @forelse ($categories as $c)
-                            @if (!$c->is_global)
-                                <div class="flex flex-col gap-3">
-                                    <a href='{{ route('categories.show', $c->id) }}' class='flex items-center gap-2'>
-                                        <div
-                                            class="w-[12px] h-[12px] bg-[{{ $c->color }}] rounded-full border border-solid border-white">
-                                        </div>
-                                        <p>{{ $c->title }}</p>
-                                    </a>
-                                    <p class="text-[#9198a1] w-[80%] pl-[10px]">&emsp;{{ $c->description }} </p>
-                                </div>
-                            @endif
-                        @empty
-                            <p>no categories created yet</p>
-                        @endforelse
-                    </div>
-                </section>
-
+                        <div class="flex flex-col gap-7">
+                            @forelse ($categories as $c)
+                                @if (!$c->is_global)
+                                    <div class="flex flex-col gap-3">
+                                        <a href='{{ route('categories.show', $c->id) }}' class='flex items-center gap-2'>
+                                            <div
+                                                class="w-[12px] h-[12px] bg-[{{ $c->color }}] rounded-full border border-solid border-white">
+                                            </div>
+                                            <p>{{ $c->title }}</p>
+                                        </a>
+                                        <p class="text-[#9198a1] w-[80%] pl-[10px]">&emsp;{{ $c->description }} </p>
+                                    </div>
+                                @endif
+                            @empty
+                                <p>no categories created yet</p>
+                            @endforelse
+                        </div>
+                    </section>
+                @endif
 
 
                 @can('accessGlobalCategories', App\Models\Category::class)

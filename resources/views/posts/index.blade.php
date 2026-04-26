@@ -8,30 +8,42 @@
     @endif
 @endsection
 
-@section('nav')
-    {{-- <a href='{{ route('posts.create') }}'>create post</a>
-    <a href='{{ route('posts.index') }}'>all posts</a> --}}
-@endsection
 
-
-@if (auth()->user()->role == 'Admin' || auth()->user()->role == 'Moderator')
-    @section('nav')
-        @can('ban', App\Models\User::class)
-            <a href="{{ route('blackList') }}">black list</a>
-            <a href="{{ route('users.index') }}">active users</a>
-            <a href="{{ route('categories.global') }}">global categories</a>
-        @endcan
-        <a href="{{ route('posts.hidden') }}">hidden posts</a>
-        <a href="{{ route('reports.index') }}">reports</a>
-    @endsection
+@if (request()->routeIs(['posts.hidden']))
+    @if (auth()->user()->role == 'Admin' || auth()->user()->role == 'Moderator')
+        @section('nav')
+            @can('ban', App\Models\User::class)
+                <a href="{{ route('blackList') }}">black list</a>
+                <a href="{{ route('users.index') }}">active users</a>
+                <a href="{{ route('categories.global') }}">categories</a>
+            @endcan
+            <a href="{{ route('posts.hidden') }}">posts</a>
+            <a href="{{ route('reports.index') }}">reports</a>
+        @endsection
+    @endif
 @endif
-
 
 
 
 @section('content')
     <section class="mx-auto w-full max-w-6xl px-4 py-6">
 
+    @if (request()->routeIs(['posts.hidden']))
+        <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h2 class="text-xl font-bold tracking-wide text-white">hidden posts</h2>
+                    <p class="mt-2 text-sm text-[#9198a1]">
+                        Review hidden posts.
+                    </p>
+                </div>
+                <div class="rounded-xl border border-white/10 bg-[#0d1117] px-4 py-3">
+                    <p class="text-xs uppercase tracking-[0.2em] text-[#9198a1]">Total posts</p>
+                    <p class="mt-2 text-lg font-semibold text-white">{{ count($posts) }}</p>
+                </div>
+            </div>
+        </div>
+        @endif
 
         <div class="flex flex-col gap-6">
             @forelse ($posts as $post)
