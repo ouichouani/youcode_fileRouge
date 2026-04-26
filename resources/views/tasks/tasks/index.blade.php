@@ -25,16 +25,16 @@
             </div>
 
             @foreach ($categories as $cat)
-                <div class='border border-white/30 border-solid rounded-lg flex flex-col gap-15  '>
+                <div class='border border-white/30 border-solid rounded-lg flex flex-col gap-1  '>
 
-                    <div class="bg-[{{ $cat->color }}]/10 p-[20px] border-b border-solid border-white/30">
+                    <div class="bg-[{{ $cat->color }}]/10 p-[15px] border-b border-solid border-white/30">
                         <a href="{{ route('categories.show', $cat->id) }}" class="flex gap-3 items-center w-fit">
                             <div class='bg-[{{ $cat->color }}] rounded-full w-[20px] h-[20px]'></div>
                             <h1 class="text-3xl font-bold">{{ $cat->title }}</h1>
                         </a>
                     </div>
 
-                    <section class="flex flex-col gap-7 p-[20px]">
+                    <section class="flex flex-col gap-4 p-[20px]">
                         @forelse ($cat->tasks as $task)
                             <div class="flex flex-col gap-3">
                                 <form class="flex gap-3" action="{{ route('tasks.done', $task->id) }}" method='POST'>
@@ -42,18 +42,12 @@
                                     <input type="checkbox" class="task_done cursor-pointer"
                                         {{ $task->done ? 'checked' : '' }}>
                                     <a href='{{ route('tasks.show', $task->id) }}' class='flex items-center gap-2'>
-                                        <p class="font-bold text-lg {{ $task->done ? 'line-through' : '' }}">
+                                        <p class="font-bold text-md {{ $task->done ? 'line-through' : '' }}">
                                             {{ $task->title }}
                                         </p>
                                     </a>
                                 </form>
-                                <div class="flex">
-                                    <span class="text-[#9198a1] pl-[10px]">&emsp; priority : {{ $task->priority }} </span>
-                                    <span class="text-[#9198a1] pl-[10px]">&emsp; difficulty : {{ $task->difficulty }}
-                                    </span>
-                                    <span class="text-[#9198a1] pl-[10px]" title='deadline'>&emsp; {{ $task->deadline }}
-                                    </span>
-                                </div>
+
                             </div>
                         @empty
                             <p>no tasks for this cat</p>
@@ -65,7 +59,7 @@
             @endforeach
 
             @if (isset($abandoned_tasks) && count($abandoned_tasks))
-                <div class='border border-white/30 border-solid rounded-lg flex flex-col gap-15  '>
+                <div class='border border-white/30 border-solid rounded-lg flex flex-col gap-1  '>
                     <div class="bg-[#25171c] w-full p-[20px] border-b border-solid border-white/30 rounded-t-lg">
                         <div class="flex gap-3 items-center w-fit">
                             <div class='bg-[#25171c]/50 border border-white/30 border-solid rounded-full w-[20px] h-[20px]'>
@@ -74,7 +68,7 @@
                         </div>
                     </div>
 
-                    <section class="flex flex-col gap-7 p-[20px]">
+                    <section class="flex flex-col gap-4 p-[15px]">
                         @forelse ($abandoned_tasks as $task)
                             <div class="flex flex-col gap-3">
 
@@ -83,19 +77,12 @@
                                     <input type="checkbox" class="task_done cursor-pointer"
                                         {{ $task->done ? 'checked' : '' }}>
                                     <a href='{{ route('tasks.show', $task->id) }}' class='flex items-center gap-2'>
-                                        <p class="font-bold text-lg {{ $task->done ? 'line-through' : '' }}">
+                                        <p class="font-bold text-ms {{ $task->done ? 'line-through' : '' }}">
                                             {{ $task->title }}
                                         </p>
                                     </a>
                                 </form>
 
-                                <div class="flex">
-                                    <span class="text-[#9198a1] pl-[10px]">&emsp; priority : {{ $task->priority }} </span>
-                                    <span class="text-[#9198a1] pl-[10px]">&emsp; difficulty : {{ $task->difficulty }}
-                                    </span>
-                                    <span class="text-[#9198a1] pl-[10px]" title='deadline'>&emsp; {{ $task->deadline }}
-                                    </span>
-                                </div>
                             </div>
                         @empty
                             <p>no abandoned tasks</p>

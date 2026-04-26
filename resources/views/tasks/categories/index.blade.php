@@ -73,7 +73,7 @@
                 @endif
 
 
-                @can('accessGlobalCategories', App\Models\Category::class)
+                {{-- @can('accessGlobalCategories', App\Models\Category::class) --}}
                     <section class='border border-white/30 border-solid rounded-lg p-[20px] flex flex-col gap-15 bg-[#25171c] '>
                         <div class="flex flex-col gap-5">
                             <h2 class="text-3xl font-bold">Global categories</h2>
@@ -88,12 +88,14 @@
                             @forelse ($categories as $c)
                                 @if ($c->is_global)
                                     <div class="flex flex-col gap-3">
+                                         {{-- @can('accessGlobalCategories', App\Models\Category::class) --}}
                                         <a href='{{ route('categories.show', $c->id) }}' class='flex items-center gap-2'>
                                             <div
                                                 class="w-[12px] h-[12px] bg-[{{ $c->color }}] rounded-full border border-solid border-white">
                                             </div>
                                             <p>{{ $c->title }}</p>
                                         </a>
+                                        {{-- @endcan --}}
                                         <p class="text-[#9198a1] w-[80%] pl-[10px]">&emsp;{{ $c->description }} </p>
                                     </div>
                                 @endif
@@ -102,7 +104,7 @@
                             @endforelse
                         </div>
                     </section>
-                @endcan
+                {{-- @endcan --}}
 
             </section>
         </div>

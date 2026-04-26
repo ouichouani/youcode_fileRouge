@@ -9,7 +9,7 @@
     <title>@yield('title', 'habits grow')</title>
 </head>
 
-<body>
+<body class="bg-[#151b23]">
     
     <div class="flex w-full h-screen">
         @include('components.sidebar')
@@ -19,7 +19,7 @@
             <main class="text-sm p-[1em]">
                 @yield('content')
             </main>
-            @include('components.footer')
+            {{-- @include('components.footer') --}}
         </section>
     </div>
 

@@ -12,7 +12,20 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::where('user_id', Auth::id())->get();
+
+
+        $categories = Category::where(function($q){
+            $q->where('user_id', Auth::id())->Where('is_global' , false) ;  
+        })
+        ->orWhere('is_global' , true)
+        ->whereHas('tasks' , function($q){
+            $q->where('user_id' , Auth::id())->where('is_global' , true) ;
+        })
+        ->orWhereHas('habits' , function($q){
+            $q->where('user_id' , Auth::id())->where('is_global' , true) ;
+        })
+        ->get();
+        // dd($categories) ;
         return view('tasks.categories.index', compact('categories'));
     }
 
@@ -43,7 +56,7 @@ class CategoryController extends Controller
                 $query->where('user_id', Auth::id());
             },
             'tasks' => function ($query) {
-                $query->where('user_id', Auth::id())->orderBy('done');;
+                $query->where('user_id', Auth::id())->orderBy('done');
             }
         ]);
 

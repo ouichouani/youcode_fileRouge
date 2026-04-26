@@ -16,6 +16,20 @@
 
 @section('content')
     <section class="mx-auto w-full max-w-6xl px-4 py-6">
+
+        <div class="mb-6 px-6 py-5">
+            <div class="flex items-center justify-center">
+                <form action="" method="GET" class="flex gap-2 w-[70%]">
+                    <input type="text" name="like" placeholder="search for a user by he's name or email"
+                        class=" w-[100%] p-1 px-2 bg-[#151b23] border border-solid border-white/20 rounded-lg focus:bg-transparent focus:outline-blue-500 focus:outline-2 ">
+                    <button
+                        class="p-1 px-3 bg-[#151b23] border border-solid border-white/30 rounded-lg transition hover:border-white/60">
+                        search
+                    </button>
+                </form>
+            </div>
+        </div>
+
         <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">
             <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
@@ -36,22 +50,6 @@
             </div>
         </div>
 
-        <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">
-            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-
-                <div style="flex items-center justify-center bg-red-300">
-                    <form action="" method="GET">
-                        <input type="text" name="like"
-                            class="p-1 px-2 bg-[#151b23] border border-solid border-white/20 rounded-lg focus:bg-transparent focus:outline-blue-500 focus:outline-2 ">
-                        <button
-                            class="p-2 bg-[#151b23] border border-solid border-white/30 rounded-lg transition hover:border-white/60">
-                            search
-                        </button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
 
         <div class="flex flex-col gap-5">
             @forelse ($users as $user)

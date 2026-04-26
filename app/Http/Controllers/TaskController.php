@@ -40,7 +40,7 @@ class TaskController extends Controller
     public function create()
     {
         $user = Auth::user() ;
-        $categories = Category::where('user_id' , $user->id)->get() ;
+        $categories = Category::where('user_id' , $user->id)->orwhere('is_global' , true)->get() ;
         return view('tasks.tasks.create' , compact('user' , 'categories') ) ;
     }
 
@@ -67,7 +67,7 @@ class TaskController extends Controller
     {
         $this->authorize('update' , $task) ;
         $user = Auth::user() ;
-        $categories = Category::where('user_id' , $user->id)->get() ;
+        $categories = Category::where('user_id' , $user->id)->orwhere('is_global' , true)->get() ;
         return view('tasks.tasks.edit' , compact('task' , 'categories')) ;
     }
 

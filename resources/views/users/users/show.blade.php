@@ -29,9 +29,74 @@
                                                 class="text-2xl font-bold {{ $user->role == 'Admin' ? 'text-yellow-200' : ($user->role == 'Moderator' ? 'text-red-500' : 'text-white') }}">
                                                 {{ $user->name }}</h2>
                                             <p class="text-md text-white">{{ $user->email }}</p>
-                                            <p>rank :
-                                                {{ $user->score == null || $user->score == 0 ? 'nooby' : ($user->score < 100 ? 'bot hhh' : ($user->score > 100 && $user->score < 200 ? 'hmm good' : 'the GOAT')) }}
-                                            </p>
+                                            
+                                            @php
+                                                function getRank($score)
+                                                {
+                                                    if ($score === null) {
+                                                        return 'Lost Soul 👻';
+                                                    }
+
+                                                    return match (true) {
+                                                        // 💀 EXTREME LOW (chaos zone)
+                                                        $score < -300 => 'Void Spawn 🕳️',
+                                                        $score < -250 => 'Abyss ☠️',
+                                                        $score < -200 => 'Cursed Skull 💀',
+                                                        $score < -150 => 'Broken Spirit 🪫',
+                                                        $score < -100 => 'Failed Experiment 🧪',
+                                                        // 😵 very low
+                                                        $score < -75 => 'Slime 🟢',
+                                                        $score < -50 => 'Clown 🤡',
+                                                        $score < -25 => 'Potato 🥔',
+                                                        $score < 0 => 'Rat 🐀',
+                                                        // 🐣 beginner fail zone
+                                                        $score < 25 => 'Bug 🐛',
+                                                        $score < 50 => 'Dust 🌫️',
+                                                        $score < 75 => 'Lost Wanderer 🚶',
+                                                        $score < 100 => 'Peasant 🪵',
+                                                        // 📈 early progress
+                                                        $score < 150 => 'Novice 📘',
+                                                        $score < 200 => 'Apprentice 🧪',
+                                                        $score < 250 => 'Wanderer 🚶‍♂️',
+                                                        $score < 300 => 'Goblin 🧌',
+                                                        $score < 350 => 'Squire 🛡️',
+                                                        // ⚔️ mid tier
+                                                        $score < 400 => 'Hunter 🏹',
+                                                        $score < 450 => 'Knight-in-Training ⚔️',
+                                                        $score < 500 => 'Knight 🛡️',
+                                                        $score < 550 => 'Elite Fighter 🥊',
+                                                        $score < 600 => 'Shadow Blade 🌑',
+                                                        $score < 650 => 'Griffin 🦅',
+                                                        // 🔥 advanced
+                                                        $score < 700 => 'Prince 🤴',
+                                                        $score < 750 => 'Noble 🎩',
+                                                        $score < 800 => 'Warlock 🧙‍♂️',
+                                                        $score < 850 => 'Wizard 🔮',
+                                                        $score < 900 => 'Phoenix 🔥',
+                                                        $score < 950 => 'Dragon 🐉',
+                                                        // 👑 elite
+                                                        $score < 1000 => 'King 👑',
+                                                        $score < 1100 => 'High King 👑⚔️',
+                                                        $score < 1200 => 'Emperor 🏛️',
+                                                        $score < 1400 => 'Overlord 🩸',
+                                                        $score < 1600 => 'Titan ⚡',
+                                                        $score < 1800 => 'Ancient One 🗿',
+                                                        $score < 2000 => 'Mythic Hero 🌟',
+                                                        // 🌌 legendary+ tiers
+                                                        $score < 2500 => 'Celestial Guardian 🌌',
+                                                        $score < 3000 => 'Void Reaper 🕳️⚔️',
+                                                        $score < 4000 => 'Star Destroyer 🌠',
+                                                        $score < 5000 => 'Reality Bender 🧠',
+                                                        $score < 7000 => 'Eternal Legend ♾️',
+                                                        $score < 10000 => 'Ascended One ✨',
+
+                                                        default => 'Cosmic Sovereign 🌌👑',
+                                                    };
+                                                }
+                                            @endphp
+
+                                            <p>rank : {{ getRank($user->score) }}</p>
+
                                             <p class="text-md text-white ">{{ $user->bio }}</p>
                                         </div>
 
@@ -161,13 +226,13 @@
                 </div>
             </div>
         </div>
-        
+
         <section class="rounded p-6">
             <div class="mb-6 flex items-center justify-between gap-4">
-                <a title='add post' href='{{ route('posts.create') }}' 
+                <a title='add post' href='{{ route('posts.create') }}'
                     class="rounded-full border border-white/20 bg-[#0d1117] w-10 h-10 text-sm font-medium text-white transition hover:border-white/50 cursor-pointer flex items-center justify-center">
                     <span>+</span>
-            </a>
+                </a>
             </div>
 
             <div class="flex flex-col gap-6">

@@ -41,7 +41,7 @@ class HabitController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $categories = Category::where('user_id', $user->id)->get();
+        $categories = Category::where('user_id', $user->id)->orWhere('is_global' , true)->get();
         return view('tasks.habits.create', compact('user', 'categories'));
     }
 
@@ -66,17 +66,17 @@ class HabitController extends Controller
     {
         $this->authorize('update', $habit);
         $user = Auth::user();
-        $categories = Category::where('user_id', $user->id)->get();
+        $categories = Category::where('user_id', $user->id)->orWhere('is_global' , true)->get();
         return view('tasks.habits.edit', compact('habit', 'categories'));
     }
 
-    public function update(UpdateHabitRequest $request, Task $task)
+    public function update(UpdateHabitRequest $request, Task $habit)
     {
-        $this->authorize('update', $task);
+        $this->authorize('update', $habit);
         $newHabit = $request->validated();
-        $task->update($newHabit);
-        $task->save();
-        return redirect()->route('habits.show', $task);
+        $habit->update($newHabit);
+        $habit->save();
+        return redirect()->route('habits.show', $habit);
     }
 
 
