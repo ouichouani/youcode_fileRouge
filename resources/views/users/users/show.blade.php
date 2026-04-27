@@ -11,7 +11,8 @@
 
         <div class="w-full flex items-center justify-center">
             <div class="flex flex-col items-end">
-                <div class="md:w-[80vw] mb-6 rounded-2xl border border-white/10 bg-[#151b23] p-3 shadow-lg ">
+
+                <div class="xl:w-[60vw] lg:w-[80vw] mb-6 rounded-2xl border border-white/10 bg-[#151b23] p-3 shadow-lg">
                     <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between ">
 
                         <div class="flex flex-1 items-start gap-5 ">
@@ -24,7 +25,7 @@
                                             alt="{{ $user->name }}"
                                             class="w-30 h-30 md:h-40 md:w-40 rounded-full border border-white/20 bg-[#0d1117] object-cover">
 
-                                        <div>
+                                        <div class="text-center sm:text-left">
                                             <h2
                                                 class="text-2xl font-bold {{ $user->role == 'Admin' ? 'text-yellow-200' : ($user->role == 'Moderator' ? 'text-red-500' : 'text-white') }}">
                                                 {{ $user->name }}</h2>
