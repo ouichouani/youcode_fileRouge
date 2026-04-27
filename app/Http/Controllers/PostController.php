@@ -55,8 +55,8 @@ class PostController extends Controller
 
         if(isset($data['images'])) Image::storeMultiple($post, 'posts', $data['images']);
         
-
-        return redirect()->route('posts.show', $post->id)->with('message', 'Post created successfully');
+        return redirect()->back() ; 
+        // return redirect()->route('posts.show', $post->id)->with('message', 'Post created successfully');
     }
 
     public function edit(Post $post)
