@@ -15,16 +15,16 @@
 
     <main class="w-full h-screen bg-[#0d1117] text-white">
 
-        <div class="flex h-full items-center">
+        <div class="lg:flex h-full items-center">
 
-            <section class="h-[50%] w-[50%] pl-[10vw] flex flex-col gap-8 border-r border-solid border-white/30">
+            <section class="h-[50%] w-[50%] pl-[10vw] hidden lg:flex flex-col gap-8 border-r border-solid border-white/30 ">
                 <h1 class="text-[3.3em] font-bold">BACK IN ACTION</h1>
                 <p class="text-[#9198a1] pl-[10px] w-[90%] ">Great to see you again! Your habits define your future, and
                     you’ve just made the best choice of the day by showing up for yourself. Ready to tick off some goals
                     and crush your streaks? Let’s get to work!</p>
             </section>
 
-            <section class="h-[70%] w-[50%] flex justify-center items-center ">
+            <section class="lg:h-[70%] lg:w-[50%] w-full h-full flex justify-center items-center ">
                 <div class="w-[60%] h-fit">
                 <h1 class="text-[2em] font-bold mb-10">LOGIN</h1>
 
