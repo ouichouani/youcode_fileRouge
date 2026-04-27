@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-2">
             @forelse ($friendRequests as $f)
                 <article class="rounded-2xl border border-white/10 bg-[#151b23] p-2 md:p-4 shadow-lg">
                     <div class="flex justify-between items-center md:gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -71,7 +71,26 @@
                                     @csrf
                                     <button title="refuse"
                                         class="rounded-full border w-10 h-10 flex items-center justify-center cursor-pointer border-red-400/30 bg-red-500/10 text-sm font-medium text-red-200 transition hover:bg-red-500/20">
-                                        x
+                                        <svg width="10px" height="10px" viewBox="0 0 32 32"
+                                            xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                            <g id="SVGRepo_iconCarrier">
+                                                <defs>
+                                                    <style>
+                                                        .cls-1 {
+                                                            fill: #ffffff;
+                                                        }
+                                                    </style>
+                                                </defs>
+                                                <g id="cancel">
+                                                    <path class="cls-1"
+                                                        d="M28,29a1,1,0,0,1-.71-.29l-24-24A1,1,0,0,1,4.71,3.29l24,24a1,1,0,0,1,0,1.42A1,1,0,0,1,28,29Z" />
+                                                    <path class="cls-1"
+                                                        d="M4,29a1,1,0,0,1-.71-.29,1,1,0,0,1,0-1.42l24-24a1,1,0,1,1,1.42,1.42l-24,24A1,1,0,0,1,4,29Z" />
+                                                </g>
+                                            </g>
+                                        </svg>
                                     </button>
                                 </form>
                             @endif
@@ -99,12 +118,31 @@
                             @if ($f->status == 'accepted')
                                 <div class="flex flex-wrap gap-3">
                                     <span
-                                        class="rounded-full border px-5 py-2 text-sm {{ $f->status === 'pending' ? 'border-yellow-400/20 bg-yellow-500/10 text-yellow-200' : ($f->status === 'accepted' ? 'border-green-400/20 bg-green-500/10 text-green-200' : 'border-red-400/20 bg-red-500/10 text-red-200') }}">
-                                        {{ $f->status }}
+                                        class="rounded-full border w-10 h-10 flex items-center justify-center text-sm {{ $f->status === 'pending' ? 'border-yellow-400/20 bg-yellow-500/10 text-yellow-200' : ($f->status === 'accepted' ? 'border-green-400/20 bg-green-500/10 text-green-200' : 'border-red-400/20 bg-red-500/10 text-red-200') }}">
+                                        {{-- {{ $f->status }} --}}
+                                        <svg width="12px" height="12px" viewBox="0 0 32 32"
+                                            xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#ffffff">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                            <g id="SVGRepo_iconCarrier">
+                                                <defs>
+                                                    <style>
+                                                        .cls-1 {
+                                                            fill: #ffffff;
+                                                        }
+                                                    </style>
+                                                </defs>
+                                                <g id="check">
+                                                    <path class="cls-1"
+                                                        d="M12.16,28a3,3,0,0,1-2.35-1.13L3.22,18.62a1,1,0,0,1,1.56-1.24l6.59,8.24A1,1,0,0,0,13,25.56L27.17,4.44a1,1,0,1,1,1.66,1.12L14.67,26.67A3,3,0,0,1,12.29,28Z" />
+                                                </g>
+                                            </g>
+                                        </svg>
                                     </span>
                                 </div>
                             @endif
                         </div>
+
                     </div>
                 </article>
             @empty

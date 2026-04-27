@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <section class="mx-auto w-full max-w-5xl px-4 py-6">
+    <section class="mx-auto w-full max-w-5xl py-6">
         <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] p-6 shadow-lg">
             <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                 <div class="flex-1">

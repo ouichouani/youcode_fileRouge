@@ -33,7 +33,7 @@
 
 
 @section('content')
-    <section class="mx-auto w-full max-w-6xl px-4 py-6">
+    <section class="mx-auto w-full max-w-6xl py-6">
         <div class="relative w-full pt-15">
 
             <div class="flex gap-3 absolute top-[0px] right-[0px]">
