@@ -19,10 +19,10 @@
             <main class="text-sm p-[1em]">
                 @yield('content')
             </main>
-            {{-- @include('components.footer') --}}
         </section>
     </div>
 
+    @stack('script')
     @stack('scripts')
 
 
