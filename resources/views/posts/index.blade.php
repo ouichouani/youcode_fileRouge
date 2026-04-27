@@ -28,7 +28,7 @@
 
 
 @section('content')
-    <section class="mx-auto w-full max-w-6xl px-4 py-6">
+    <section class="mx-auto w-full max-w-6xl">
 
         @if (request()->routeIs(['posts.hidden']))
             <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">

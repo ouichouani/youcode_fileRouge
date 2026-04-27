@@ -15,11 +15,11 @@
     $visibilities = ['public', 'private', 'friends'];
 @endphp
 
-<section class="mx-auto w-full max-w-4xl px-4 py-6">
+<section class="mx-auto w-full max-w-4xl">
     <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">
         <h2 class="text-xl font-bold tracking-wide text-white">Edit post</h2>
         <p class="mt-2 text-sm text-[#9198a1]">
-            Update the details below and save your changes with the same clean workflow used across the app.
+            Update the details below and save your changes , changes will be visible to all users at the same moment.
         </p>
     </div>
 
