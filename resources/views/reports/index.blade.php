@@ -22,7 +22,7 @@
 
 @section('content')
 
-    <section class="mx-auto w-full max-w-6xl px-4 py-6">
+    <section class="mx-auto w-full max-w-6xl mt-2">
         <div class="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">
             <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
 
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <section class="mx-auto w-full max-w-6xl px-4 py-6">
+        <section class="mx-auto w-full max-w-6xl">
 
             <div class="flex flex-col gap-6">
                 @forelse ($posts as $post)

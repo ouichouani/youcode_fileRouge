@@ -16,7 +16,7 @@
 
 
 @section('content')
-    <section class="mx-auto w-full max-w-6xl px-4 py-6">
+    <section class="mx-auto w-full max-w-6xl py-6">
         <div class="relative w-full pt-15">
 
             <div class="flex gap-3 absolute top-[0px] right-[0px]">
@@ -30,7 +30,7 @@
                     <div class="bg-[{{ $cat->color }}]/10 p-[15px] border-b border-solid border-white/30">
                         <a href="{{ route('categories.show', $cat->id) }}" class="flex gap-3 items-center w-fit">
                             <div class='bg-[{{ $cat->color }}] rounded-full w-[20px] h-[20px]'></div>
-                            <h1 class="text-3xl font-bold">{{ $cat->title }}</h1>
+                            <h1 class="text-2xl font-bold">{{ $cat->title }}</h1>
                         </a>
                     </div>
 
@@ -42,7 +42,7 @@
                                     <input type="checkbox" class="task_done cursor-pointer"
                                         {{ $task->done ? 'checked' : '' }}>
                                     <a href='{{ route('tasks.show', $task->id) }}' class='flex items-center gap-2'>
-                                        <p class="font-bold text-md {{ $task->done ? 'line-through' : '' }}">
+                                        <p class="text-md {{ $task->done ? 'line-through' : '' }}">
                                             {{ $task->title }}
                                         </p>
                                     </a>
@@ -64,7 +64,7 @@
                         <div class="flex gap-3 items-center w-fit">
                             <div class='bg-[#25171c]/50 border border-white/30 border-solid rounded-full w-[20px] h-[20px]'>
                             </div>
-                            <h1 class="text-3xl font-bold">abandoned tasks</h1>
+                            <h1 class="text-2xl font-bold">abandoned tasks</h1>
                         </div>
                     </div>
 
@@ -77,7 +77,7 @@
                                     <input type="checkbox" class="task_done cursor-pointer"
                                         {{ $task->done ? 'checked' : '' }}>
                                     <a href='{{ route('tasks.show', $task->id) }}' class='flex items-center gap-2'>
-                                        <p class="font-bold text-ms {{ $task->done ? 'line-through' : '' }}">
+                                        <p class="text-ms {{ $task->done ? 'line-through' : '' }}">
                                             {{ $task->title }}
                                         </p>
                                     </a>

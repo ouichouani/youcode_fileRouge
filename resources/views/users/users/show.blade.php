@@ -15,10 +15,10 @@
                 <div class="xl:w-[60vw] lg:w-[80vw] mb-6 rounded-2xl border border-white/10 bg-[#151b23] p-3 shadow-lg">
                     <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between ">
 
-                        <div class="flex flex-1 items-start gap-5 ">
+                        <div class=" flex flex-1 items-start gap-5 ">
 
                             <div class="flex justify-center md:justify-between items-center w-full flex-wrap ">
-                                <div class="flex gap-20 items-center min-w-[300px] md:max-w-[70%] ">
+                                <div class="flex gap-20 items-center justify-center min-w-[300px] md:max-w-[70%] ">
 
                                     <div class="flex flex-col sm:flex-row gap-4 items-center">
                                         <img src="{{ asset($user?->image?->path ? 'storage/' . $user?->image?->path : 'images/blank-profile.webp') }}"

@@ -56,8 +56,8 @@ class DatabaseSeeder extends Seeder
         // Post::factory(100)->create();
         // Like::factory(200)->create();
         // Comment::factory(200)->create();
-        Report::factory(10)->create();
-        // FriendRequest::factory(100)->create();
+        // Report::factory(10)->create();
+        FriendRequest::factory(100)->create();
         // Log::factory(90)->create();
 
         // Category::factory(10)->create();

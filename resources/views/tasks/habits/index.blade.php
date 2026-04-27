@@ -14,7 +14,7 @@
 @endsection
 
 @section('content')
-    <section class="mx-auto w-full max-w-6xl px-4 py-6">
+    <section class="mx-auto w-full max-w-6xl py-6">
         <div class="relative w-full pt-15">
             <div class="flex gap-3 absolute top-[0px] right-[0px]">
                 <a class="p-2 bg-[#151b23] border border-solid border-white/30 rounded-lg transition hover:border-white/60"
@@ -28,7 +28,7 @@
                             <div
                                 class='bg-[{{ $cat->color }}] border border-white/30 border-solid rounded-full w-[20px] h-[20px]'>
                             </div>
-                            <h1 class="text-3xl font-bold">{{ $cat->title }}</h1>
+                            <h1 class="text-2xl font-bold">{{ $cat->title }}</h1>
                         </a>
                     </div>
 
@@ -36,7 +36,7 @@
                         @forelse ($cat->habits as $habit)
                             <div class="flex flex-col gap-3">
                                 <a href='{{ route('habits.show', $habit->id) }}' class='flex items-center gap-2'>
-                                    <p class="font-bold text-md">- {{ $habit->title }}</p>
+                                    <p class="text-md">- {{ $habit->title }}</p>
                                 </a>
                             </div>
                         @empty
@@ -56,7 +56,7 @@
                         <div class="flex gap-3 items-center w-fit">
                             <div class='bg-[#25171c]/50 border border-white/30 border-solid rounded-full w-[20px] h-[20px]'>
                             </div>
-                            <h1 class="text-3xl font-bold">abandoned habits</h1>
+                            <h1 class="text-2xl font-bold">abandoned habits</h1>
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
                         @forelse ($abandoned_habits as $habit)
                             <div class="flex flex-col gap-3">
                                 <a href='{{ route('habits.show', $habit->id) }}' class='flex items-center gap-2'>
-                                    <p class="font-bold text-md">- {{ $habit->title }}</p>
+                                    <p class="text-md">- {{ $habit->title }}</p>
                                 </a>
                             </div>
                         @empty
