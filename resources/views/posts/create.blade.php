@@ -4,11 +4,6 @@
     CREATE POST
 @endsection
 
-@section('nav')
-    <a href='{{ route('posts.create') }}'>create post</a>
-    <a href='{{ route('posts.index') }}'>all posts</a>
-@endsection
-
 @section('content')
 @php
     $types = ['Question', 'History', 'Encouragement'];

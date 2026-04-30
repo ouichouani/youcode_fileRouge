@@ -38,6 +38,7 @@
                             @foreach ($habits as $h)
                                 @php
                                     $logs = $h->logs;
+                                    $lastLog = $logs->last();
                                     $current_log_index = 0;
                                 @endphp
                                 <tr>
@@ -61,10 +62,9 @@
                                                         src="{{ asset('svg/x.svg') }}" class="w-[15px] m-auto" alt=""></td>
                                             @endif
 
-                                            @php
-                                                $lastLog = $logs->last();
-                                            @endphp
-                                        @elseif (now()->day == $i && in_array(now()->format('l'), $h?->frequency))
+                                        @elseif ( now()->day == $i && in_array(now()->format('l'), $h?->frequency))
+
+
                                             @if ($lastLog?->completed_date->day != $i)
                                                 <td class="border border-solid border-white/50 min-w-[25px] text-center cursor-pointer">
                                                     <form action="{{ route('logs.store') }}" method="POST">

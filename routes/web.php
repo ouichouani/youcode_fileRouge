@@ -83,5 +83,5 @@ Route::middleware('auth')->group(function () {
 
 
 Route::fallback(function () {return view('components.notFound');})->name('fallback');
-Route::get('/s', [LogController::class, 'index']);
+
 

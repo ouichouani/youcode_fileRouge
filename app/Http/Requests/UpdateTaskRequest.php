@@ -24,7 +24,7 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'title' => 'sometimes|string|min:1',
-            'description' => 'sometimes|string|min:3',
+            'description' => 'nullable|string|min:3',
             'difficulty' => 'sometimes|in:xxs,xs,s,m,l,xl,xxl',
             'priority' => 'sometimes|in:xxs,xs,s,m,l,xl,xxl',
             'deadline' => 'sometimes|nullable|date',

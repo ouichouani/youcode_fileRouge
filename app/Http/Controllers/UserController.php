@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\FriendRequest;
 use App\Models\Image;
+use App\Models\Post;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,9 +82,10 @@ class UserController extends Controller
 
     // CRUD methods
 
-    public function search($query , $like){
-        return $query->where(function($q) use($like){
-            $q->where('name' , "like" ,"%$like%")->orWhere('email' , 'like', "%$like%") ;
+    public function search($query, $like)
+    {
+        return $query->where(function ($q) use ($like) {
+            $q->where('name', "like", "%$like%")->orWhere('email', 'like', "%$like%");
         });
     }
 
@@ -92,13 +94,13 @@ class UserController extends Controller
     {
         $this->authorize('index', User::class);
         $users = User::with('image')
-        ->where('is_banned' , false)
-        ->where('is_banned_by_moderator' , false)
-        ->orderBy('email');
+            ->where('is_banned', false)
+            ->where('is_banned_by_moderator', false)
+            ->orderBy('email');
 
-        $like = request()->query('like') ;
+        $like = request()->query('like');
 
-        if($like) $users = $this->search($users , $like) ;
+        if ($like) $users = $this->search($users, $like);
 
         $users = $users->get();
 
@@ -114,11 +116,18 @@ class UserController extends Controller
     {
         // This method is created to avoid code repetition in show and profile methods as they both need to load the same relations for the user
         if (!$user) return redirect()->route('login')->with('error', 'Please login to view your profile');
+                // dd($user->is_frend_with(Auth::user()));
 
         $user->load([
-            'posts' => function($q){
-                $q->latest() ;
-            } ,
+            'posts' => function ($q) use ($user) {
+
+                if ($user->id != Auth::user()->id) {
+                    $q->where('visibility', 'public');
+                    if ($user->is_frend_with(Auth::user())) $q->orWhere('visibility' , 'friends');
+                }
+                $q->latest();
+
+            },
             'posts.comments',
             'posts.likes',
             'posts.images:path,imageable_id',
@@ -136,6 +145,7 @@ class UserController extends Controller
 
         return [
             'posts' => $user?->posts,
+            // 'posts' => $posts,
             'sentRequests' =>  $user?->sentRequests,
             'receivedRequests' => $user?->receivedRequests,
         ];
@@ -171,9 +181,9 @@ class UserController extends Controller
         $posts = $data['posts'];
         $sentRequests = $data['sentRequests'];
         $receivedRequests = $data['receivedRequests'];
-        $isFriend = true ;
+        $isFriend = true;
 
-        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests' , 'isFriend'));
+        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests', 'isFriend'));
     }
 
     public function show(int $id)
@@ -204,7 +214,7 @@ class UserController extends Controller
 
 
 
-        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests', 'pendingRequest' , 'isFriend'));
+        return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests', 'pendingRequest', 'isFriend'));
     }
 
     public function edit($id)
@@ -231,7 +241,7 @@ class UserController extends Controller
             }
 
             $user->update($data);
-            $image = isset($data['image']) ? $data['image'] : null ;
+            $image = isset($data['image']) ? $data['image'] : null;
             if (isset($image) && $image instanceof \Illuminate\Http\UploadedFile) {
                 Image::store($user, 'users', $image);
             }
@@ -239,7 +249,7 @@ class UserController extends Controller
 
             return redirect()->route('users.show', $user->id)->with('success', 'User updated successfully.');
         } catch (Exception $e) {
-            dd($e->getMessage()) ;
+            dd($e->getMessage());
             return redirect()->back()->with('error', $e->getMessage());
         }
     }

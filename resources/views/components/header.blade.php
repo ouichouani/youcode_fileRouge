@@ -22,7 +22,7 @@
             </nav>
             <a href="{{ route('users.show' , auth()->id()) }}">
                 <img src="{{ asset('storage/' . auth()->user()->image?->path) }}" alt="profile image"
-                    class='w-[40px] aspect-square rounded-full hidden lg:block '>
+                    class='w-[40px] aspect-square rounded-full hidden lg:block object-cover '>
             </a>
         </div>
 

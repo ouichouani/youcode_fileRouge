@@ -43,7 +43,7 @@
                         <div>
                             <label for="Name" class="flex flex-col gap-2">
                                 <p>Name</p>
-                                <input id="Name" type="email" name="name" value="{{ old('name') }}" required
+                                <input id="Name" type="text" name="name" value="{{ old('name') }}" required
                                     class="p-1 px-2 bg-[#151b23] border border-solid border-white/20 rounded-lg focus:bg-transparent focus:outline-blue-500 focus:outline-2 ">
                             </label>
 

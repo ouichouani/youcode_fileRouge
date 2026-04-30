@@ -13,7 +13,23 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::query()->with(['comments.user.image' , 'comments.post', 'likes', 'user.image', 'images', 'reports' => function ($q) {
+        $user = Auth::user() ;
+
+        $posts = Post::query()
+        ->where(function ($q) use($user) {
+            $q->whereRaw("EXISTS (
+            SELECT 1 FROM friend_requests as fr 
+            WHERE status = 'accepted' 
+            AND visibility = 'friends'
+            AND (
+                (fr.sender_id = ? AND fr.receiver_id = posts.user_id) OR 
+                (fr.sender_id = posts.user_id AND fr.receiver_id = ?)
+            )
+            )", [$user->id, $user->id])
+            ->orWhere("visibility" , "public")
+            ->orWhere("user_id" , $user->id) ;
+        })
+        ->with(['comments.user.image' , 'comments.post', 'likes', 'user.image', 'images', 'reports' => function ($q) {
             $q->where('user_id', Auth::id());
         }])->whereHas('user' , function($q){
             $q->where('is_banned' , false)->where('is_banned_by_moderator' , false) ;
@@ -55,8 +71,8 @@ class PostController extends Controller
 
         if(isset($data['images'])) Image::storeMultiple($post, 'posts', $data['images']);
         
-        return redirect()->back() ; 
-        // return redirect()->route('posts.show', $post->id)->with('message', 'Post created successfully');
+        // return redirect()->back() ; 
+        return redirect()->route('users.profile')->with('message', 'Post created successfully');
     }
 
     public function edit(Post $post)
@@ -80,6 +96,7 @@ class PostController extends Controller
     {
         $this->authorize('delete', $post);
         $post->delete();
-        return redirect()->route('posts.index')->with('message', 'Post deleted successfully');
+        // return redirect()->route('posts.index')->with('message', 'Post deleted successfully');
+        return redirect()->route('users.profile')->with('message', 'Post deleted successfully');
     }
 }

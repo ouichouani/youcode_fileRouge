@@ -5,12 +5,19 @@ namespace App\Models;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
     use HasFactory ;
-
+ 
     protected $fillable = ['content' , 'type', 'visibility' , 'user_id'];
+    // protected $appends = 'is_friend' ;
+
+    // public function getIsFriendAttribute(){
+    //     $user = Auth::user() ;
+    //     return $this->user() == $user ;
+    // }
 
     public function images(){
         return $this->morphMany(Image::class , 'imageable') ;

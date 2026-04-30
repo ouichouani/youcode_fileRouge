@@ -230,14 +230,16 @@
 
         {{-- posts --}}
         <section class="rounded py-2">
-            <div class="mb-6 flex items-center justify-between gap-4">
-                <a title='add post' href='{{ route('posts.create') }}'
-                    class="rounded-full border border-white/20 bg-[#0d1117] w-10 h-10 text-sm font-medium text-white transition hover:border-white/50 cursor-pointer flex items-center justify-center">
-                    <span>+</span>
-                </a>
-            </div>
+            @if (auth()->user()->id == $user->id)
+                <div class="mb-6 flex items-center justify-between gap-4">
+                    <a title='add post' href='{{ route('posts.create') }}'
+                        class="rounded-full border border-white/20 bg-[#0d1117] w-10 h-10 text-sm font-medium text-white transition hover:border-white/50 cursor-pointer flex items-center justify-center">
+                        <span>+</span>
+                    </a>
+                </div>
+            @endif
 
-            <div class="flex flex-col gap-6">
+            <div class="flex flex-col gap-6 mt-10">
                 @forelse ($posts as $post)
                     <article class="rounded-2xl border border-white/10 shadow-lg">
                         <div class="flex flex-col gap-5 bg">
@@ -258,10 +260,51 @@
                                     <div class="flex items-center gap-3">
                                         @can('store', App\Models\Report::class)
                                             @if (auth()->user()->id != $post->user_id)
+
                                                 <a href="{{ route('reports.create', ['post' => $post->id]) }}">
-                                                    <img class="w-[25px] cursor-pointer" src="{{ asset('svg/report.svg') }}"
-                                                        alt="report" title="report">
+                                                    <svg width="25px" height="25px" viewBox="0 0 48 48" version="1.1"
+                                                        title="report" class="text-[#848b93] hover:text-red-500"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
+
+                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <g id="SVGRepo_iconCarrier">
+                                                            <!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+                                                            <title>report</title>
+                                                            <desc>Created with Sketch.</desc>
+                                                            <g id="report" stroke="none" stroke-width="1" fill="none"
+                                                                fill-rule="evenodd" stroke-linejoin="round">
+                                                                <rect width="48" height="48" fill="white"
+                                                                    fill-opacity="0.01" />
+                                                                <g id="编组" transform="translate(3.754351, 2.827607)"
+                                                                    stroke="currentColor" stroke-width="4">
+                                                                    <path
+                                                                        d="M32.2456488,32.1723935 L8.24564876,32.1723935 L8.24564876,18.1723935 C8.24564876,11.5449765 13.6182318,6.1723935 20.2456488,6.1723935 C26.8730658,6.1723935 32.2456488,11.5449765 32.2456488,18.1723935 L32.2456488,32.1723935 Z"
+                                                                        id="形状结合" fill="#" fill-rule="nonzero">
+                                                                    </path>
+                                                                    <path d="M4.24564876,39.1723935 L36.2456488,39.1723935"
+                                                                        id="路径-7" stroke-linecap="round"> </path>
+                                                                    <path d="M1,9.08742569 L2.51206274,11.8647745"
+                                                                        id="路径-8" stroke-linecap="round"
+                                                                        transform="translate(2.000000, 10.587426) rotate(-43.000000) translate(-2.000000, -10.587426) ">
+                                                                    </path>
+                                                                    <path d="M10.3594726,1 L9.0448312,3.87605946"
+                                                                        id="路径-8" stroke-linecap="round"
+                                                                        transform="translate(10.021384, 2.500000) rotate(-43.000000) translate(-10.021384, -2.500000) ">
+                                                                    </path>
+                                                                    <path d="M2.78432782,5.80894292 L7.02438401,5.6608769"
+                                                                        id="路径-8" stroke-linecap="round"
+                                                                        transform="translate(4.681446, 6.068090) scale(-1, 1) rotate(-43.000000) translate(-4.681446, -6.068090) ">
+                                                                    </path>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+
+                                                    </svg>
                                                 </a>
+                                                
                                             @endif
                                         @endcan
 
@@ -269,8 +312,9 @@
                                             <form action="{{ route('posts.hide', $post) }}" method="POST"
                                                 class="flex items-center">
                                                 @csrf
-                                                <button>
-                                                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
+                                                <button title="update post">
+                                                    <svg title="update post" width="25px" height="25px"
+                                                        viewBox="0 0 24 24" fill="none"
                                                         class="text-[#848b93] cursor-pointer hover:text-red-400"
                                                         xmlns="http://www.w3.org/2000/svg">
                                                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -289,10 +333,33 @@
                                             </form>
                                         @endcan
 
+                                        @can('delete', $post)
+                                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
+                                                class="flex items-center">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="cursor-pointer">
+                                                    <svg width="27px" height="27px" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        class="text-[#848b93] hover:text-red-500 transition">
+                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <g id="SVGRepo_iconCarrier">
+                                                            <path
+                                                                d="M6 5H18M9 5V5C10.5769 3.16026 13.4231 3.16026 15 5V5M9 20H15C16.1046 20 17 19.1046 17 18V9C17 8.44772 16.5523 8 16 8H8C7.44772 8 7 8.44772 7 9V18C7 19.1046 7.89543 20 9 20Z"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round" />
+                                                        </g>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @endcan
+
                                         @if (auth()->user()->id === $post->user_id)
                                             <a href="{{ route('posts.edit', $post->id) }}">
                                                 {{-- update --}}
-                                                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" 
+                                                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <g id="SVGRepo_bgCarrier" stroke-width="0" />
                                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
@@ -305,6 +372,7 @@
                                                 </svg>
                                             </a>
                                         @endif
+
                                     </div>
                                 </div>
                             </div>
