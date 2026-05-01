@@ -7,6 +7,7 @@ use App\Models\Log;
 use App\Models\Task;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Carbon\Month;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -24,7 +25,7 @@ class LogController extends Controller
             ->with([
                 'logs' => fn($query) => $query->orderBy('completed_date'),
             ])
-            ->orderBy('created_at')
+            ->orderBy('title')
             ->get();
 
         $oldestHabit = $habits->first();
@@ -40,6 +41,7 @@ class LogController extends Controller
                 )
             )->reverse()->values();
         }
+        // dd($oldestHabit) ;
 
         return view('tasks.logs.index', compact('habits', 'oldestHabit', 'months'));
     }

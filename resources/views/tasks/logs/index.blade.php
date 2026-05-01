@@ -30,6 +30,7 @@
                     $monthStart = $month->copy()->startOfMonth();
                     $monthEnd = $month->copy()->endOfMonth();
                     $daysInMonth = $month->daysInMonth;
+                    // dd($dayIn)
                 @endphp
 
                 <section class="hidden space-y-3 md:block landscape:block">
@@ -42,16 +43,21 @@
 
                     <div class="overflow-x-auto">
                         <div class="flex justify-center items-center min-w-max">
+
                             <table class="border border-solid border-white/30 rounded-4xl">
 
                                 <thead>
                                     <tr>
-                                        <td class="px-3 border-b border-solid border-white/30 min-w-[25px] bg-[#151b23] sticky left-0 block">habit
+                                        <td
+                                            class="px-3 border-b border-solid border-white/30 min-w-[25px] bg-[#151b23] sticky left-0 block">
+                                            habit
                                         </td>
-                                        @for ($i = 1; $i <= now()->daysInMonth; $i++)
+
+                                        @for ($i = 1; $i <= $daysInMonth; $i++)
                                             <td
                                                 class="border border-solid border-white/30 min-w-[25px] text-center bg-[#151b23]">
-                                                {{ $i }}</td>
+                                                {{ $i }}
+                                            </td>
                                         @endfor
                                     </tr>
                                 </thead>
@@ -62,17 +68,22 @@
                                             $logs = $h->logs;
                                             $current_log_index = 0;
                                         @endphp
+
                                         <tr>
-                                            <td class="px-3 border-b border-solid border-white/30 min-w-[25px]  bg-[#151b23] sticky left-0 block">
-                                                {{ $h->title }}</td>
-                                            @for ($i = 1; $i <= now()->daysInMonth; $i++)
+                                            <td
+                                                class="px-3 border-b border-solid border-white/30 min-w-[25px]  bg-[#151b23] sticky left-0 block">
+                                                <a href="{{ route('habits.show' , $h->id) }}">{{ $h->title }}</a></td>
+                                                
+
+                                            @for ($i = 1; $i <= $daysInMonth; $i++)
+
                                                 @php
                                                     $now = now();
-                                                    $index_date = new DateTime("$i-$now->month-$now->year");
+                                                    $index_date = new DateTime("$i-$month->month-$month->year");
                                                     $day = $index_date->format('l');
-
                                                 @endphp
-                                                @if (now()->day > $i && in_array($day, $h->frequency) && $h->created_at <= $index_date)
+
+                                                @if(now()->month > $month->month && in_array($day, $h->frequency) && $h->created_at <= $index_date)
                                                     @if (isset($logs[$current_log_index]) && $logs[$current_log_index]->completed_date->day == $i)
                                                         @php
                                                             $current_log_index++;
@@ -86,45 +97,48 @@
                                                         <td
                                                             class="border border-solid border-white/50 min-w-[25px] text-center bg-red-800">
                                                             <img src="{{ asset('svg/x.svg') }}" class="w-[15px] m-auto"
-                                                                alt=""></td>
+                                                                alt="">
+                                                        </td>
                                                     @endif
 
-                                                    @php
-                                                        $lastLog = $logs->last();
-                                                    @endphp
-                                                @elseif (now()->day == $i && in_array(now()->format('l'), $h?->frequency))
-                                                    @if ($lastLog?->completed_date->day != $i)
+                                                @elseif (now()->day > $i && in_array($day, $h->frequency) && $h->created_at <= $index_date)
+                                                    @if (isset($logs[$current_log_index]) && $logs[$current_log_index]->completed_date->day == $i)
+                                                        @php
+                                                            $current_log_index++;
+                                                        @endphp
                                                         <td
-                                                            class="border border-solid border-white/50 min-w-[25px] text-center cursor-pointer">
-                                                            <form action="{{ route('logs.store') }}" method="POST">
-                                                                @csrf
-                                                                <input type="hidden" name="task_id"
-                                                                    value="{{ $h->id }}">
-                                                                <button class="cursor-pointer">
-                                                                    <img src="{{ asset('svg/ok.svg') }}"
-                                                                        class="w-[15px] pointer-events-none" alt="">
-                                                                </button>
-                                                            </form>
+                                                            class="border border-solid border-white/50 min-w-[25px] text-center bg-green-800">
+                                                            <img src="{{ asset('svg/ok.svg') }}" class="w-[15px] m-auto"
+                                                                alt="">
                                                         </td>
                                                     @else
                                                         <td
-                                                            class="border border-solid border-white/50 min-w-[25px] text-center bg-green-800 cursor-pointer">
-                                                            <form action="{{ route('logs.destroy', $lastLog->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <input type="hidden" name="task_id"
-                                                                    value="{{ $h->id }}">
-                                                                <button class="cursor-pointer">
-                                                                    <img src="{{ asset('svg/ok.svg') }}"
-                                                                        class="w-[15px] m-auto pointer-events-none"
-                                                                        alt="">
-                                                                </button>
-                                                            </form>
+                                                            class="border border-solid border-white/50 min-w-[25px] text-center bg-red-800">
+                                                            <img src="{{ asset('svg/x.svg') }}" class="w-[15px] m-auto"
+                                                                alt="">
+                                                        </td>
+                                                    @endif
+                                                @elseif (now()->day == $i && in_array($day, $h?->frequency) && $h->created_at <= $index_date)
+                                                    @php
+                                                        $lastLog = $logs->last();
+                                                    @endphp
+
+                                                    @if ($lastLog?->completed_date->day != $i)
+                                                        <td
+                                                            class="border border-solid border-white/50 min-w-[25px] text-center bg-red-800">
+                                                            <img src="{{ asset('svg/x.svg') }}" class="w-[15px] m-auto"
+                                                                alt="">
+                                                        </td>
+                                                    @else
+                                                        <td
+                                                            class="border border-solid border-white/50 min-w-[25px] text-center bg-green-800">
+                                                            <img src="{{ asset('svg/ok.svg') }}" class="w-[15px] m-auto"
+                                                                alt="">
                                                         </td>
                                                     @endif
                                                 @else
-                                                    <td class="border border-solid border-white/50 min-w-[25px] text-center">
+                                                    <td
+                                                        class="border border-solid border-white/50 min-w-[25px] text-center">
                                                     </td>
                                                 @endif
                                             @endfor
@@ -132,6 +146,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+
                         </div>
 
                     </div>

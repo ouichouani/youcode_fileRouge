@@ -42,7 +42,8 @@
                                     $current_log_index = 0;
                                 @endphp
                                 <tr>
-                                    <td class="px-3 border border-solid border-white/30 min-w-[25px] bg-[#151b23] sticky left-0 block">{{ $h->title }}</td>
+                                    <td class="px-3 border border-solid border-white/30 min-w-[25px] bg-[#151b23] sticky left-0 block"> <a href="{{ route('habits.show' , $h->id) }}">{{ $h->title }}</a></td>
+
                                     @for ($i = 1; $i <= now()->daysInMonth; $i++)
                                         @php
                                             $now = now();

@@ -155,7 +155,7 @@ class UserController extends Controller
     {
         $user->load([
             'habits' => function ($query) {
-                $query->orderBy('id', 'asc');
+                $query->orderBy('title');
             },
             'habits.category',
             'habits.logs' => function ($query) {
@@ -211,8 +211,6 @@ class UserController extends Controller
         $posts = $data['posts'];
         $sentRequests = $data['sentRequests'];
         $receivedRequests = $data['receivedRequests'];
-
-
 
         return view('users.users.show', compact('user', 'posts', 'sentRequests', 'receivedRequests', 'pendingRequest', 'isFriend'));
     }
