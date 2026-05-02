@@ -33,6 +33,7 @@ class LogController extends Controller
         $months = collect();
 
         if ($oldestHabit) {
+
             $months = collect(
                 CarbonPeriod::create(
                     $oldestHabit->created_at->copy()->startOfMonth(),
@@ -41,7 +42,6 @@ class LogController extends Controller
                 )
             )->reverse()->values();
         }
-        // dd($oldestHabit) ;
 
         return view('tasks.logs.index', compact('habits', 'oldestHabit', 'months'));
     }
@@ -105,6 +105,7 @@ class LogController extends Controller
         }
         
         $log->delete();
+        $this->calculateScore();
 
         return redirect()->back()->with('message', 'log deleted successfully');
     }
@@ -147,7 +148,7 @@ class LogController extends Controller
                 ->count();
             }
 
-            return ($difficulty * $priority * $totalLogs) - ($difficulty * $priority * $expectedDays * 0.5) + $habit->streaks;
+            return ($difficulty * $priority * $totalLogs) - ($difficulty * $priority * $expectedDays * 0.75) + $habit->streaks ;
         })->avg();
 
 

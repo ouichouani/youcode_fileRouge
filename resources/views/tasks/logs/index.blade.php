@@ -30,7 +30,6 @@
                     $monthStart = $month->copy()->startOfMonth();
                     $monthEnd = $month->copy()->endOfMonth();
                     $daysInMonth = $month->daysInMonth;
-                    // dd($dayIn)
                 @endphp
 
                 <section class="hidden space-y-3 md:block landscape:block">
@@ -72,18 +71,22 @@
                                         <tr>
                                             <td
                                                 class="px-3 border-b border-solid border-white/30 min-w-[25px]  bg-[#151b23] sticky left-0 block">
-                                                <a href="{{ route('habits.show' , $h->id) }}">{{ $h->title }}</a></td>
-                                                
+                                                <a href="{{ route('habits.show', $h->id) }}">{{ $h->title }}</a>
+                                            </td>
+
 
                                             @for ($i = 1; $i <= $daysInMonth; $i++)
-
                                                 @php
                                                     $now = now();
                                                     $index_date = new DateTime("$i-$month->month-$month->year");
+                                                    $index_date = \Carbon\Carbon::parse($index_date);
+
                                                     $day = $index_date->format('l');
+                                                    $lastLog = $logs->last();
+
                                                 @endphp
 
-                                                @if(now()->month > $month->month && in_array($day, $h->frequency) && $h->created_at <= $index_date)
+                                                @if (now()->month > $month->month && in_array($day, $h->frequency) && $h->created_at->toDateString() <= $index_date->toDateString())
                                                     @if (isset($logs[$current_log_index]) && $logs[$current_log_index]->completed_date->day == $i)
                                                         @php
                                                             $current_log_index++;
@@ -100,8 +103,7 @@
                                                                 alt="">
                                                         </td>
                                                     @endif
-
-                                                @elseif (now()->day > $i && in_array($day, $h->frequency) && $h->created_at <= $index_date)
+                                                @elseif (now()->day > $i && in_array($day, $h->frequency) && $h->created_at->toDateString() <= $index_date->toDateString())
                                                     @if (isset($logs[$current_log_index]) && $logs[$current_log_index]->completed_date->day == $i)
                                                         @php
                                                             $current_log_index++;
@@ -118,11 +120,7 @@
                                                                 alt="">
                                                         </td>
                                                     @endif
-                                                @elseif (now()->day == $i && in_array($day, $h?->frequency) && $h->created_at <= $index_date)
-                                                    @php
-                                                        $lastLog = $logs->last();
-                                                    @endphp
-
+                                                @elseif (now()->day == $i && in_array($day, $h?->frequency) && $h->created_at->toDateString() <= $index_date->toDateString())
                                                     @if ($lastLog?->completed_date->day != $i)
                                                         <td
                                                             class="border border-solid border-white/50 min-w-[25px] text-center bg-red-800">

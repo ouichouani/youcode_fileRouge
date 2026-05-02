@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
 
             $table->enum('role' , ['Admin' , 'Client' , 'Moderator'])->default('Client');
-            $table->integer('score')->nullable();
+            $table->integer('score')->default(0);
             $table->string('bio')->nullable();
             
             $table->string('email')->unique();

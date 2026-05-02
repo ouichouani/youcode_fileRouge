@@ -34,12 +34,13 @@
                                             @php
                                                 function getRank($score)
                                                 {
-                                                    if ($score === null) {
+                                                    if ($score === null || $score === 0 ) {
                                                         return 'Lost Soul 👻';
                                                     }
 
                                                     return match (true) {
                                                         // 💀 EXTREME LOW (chaos zone)
+                                                        $score < -400 => 'absolut shit 💩',
                                                         $score < -300 => 'Void Spawn 🕳️',
                                                         $score < -250 => 'Abyss ☠️',
                                                         $score < -200 => 'Cursed Skull 💀',
@@ -47,7 +48,7 @@
                                                         $score < -100 => 'Failed Experiment 🧪',
                                                         // 😵 very low
                                                         $score < -75 => 'Slime 🟢',
-                                                        $score < -50 => 'Clown 🤡',
+                                                        $score < -50 => 'bug 🪲',
                                                         $score < -25 => 'Potato 🥔',
                                                         $score < 0 => 'Rat 🐀',
                                                         // 🐣 beginner fail zone
@@ -96,7 +97,7 @@
                                                 }
                                             @endphp
 
-                                            <p>rank : {{ getRank($user->score) }}</p>
+                                            <p>rank : {{ getRank($user->score) . '  ' . $user->score}}</p>
 
                                             <p class="text-md text-white ">{{ $user->bio }}</p>
                                         </div>

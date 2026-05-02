@@ -21,7 +21,7 @@
                 @yield('nav')
             </nav>
             <a href="{{ route('users.show' , auth()->id()) }}">
-                <img src="{{ asset('storage/' . auth()->user()->image?->path) }}" alt="profile image"
+                <img src="{{ asset(auth()->user()?->image?->path ? 'storage/' . auth()->user()?->image?->path : 'images/blank-profile.webp') }}" alt="profile image"
                     class='w-[40px] aspect-square rounded-full hidden lg:block object-cover '>
             </a>
         </div>

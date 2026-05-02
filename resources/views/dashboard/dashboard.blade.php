@@ -48,10 +48,11 @@
                                         @php
                                             $now = now();
                                             $index_date = new DateTime("$i-$now->month-$now->year");
+                                            $index_date = \Carbon\Carbon::parse($index_date);
                                             $day = $index_date->format('l');
 
                                         @endphp
-                                        @if (now()->day > $i && in_array($day, $h->frequency) && $h->created_at <= $index_date)
+                                        @if (now()->day > $i && in_array($day, $h->frequency) && $h->created_at->toDateString() <= $index_date->toDateString())
                                             @if (isset($logs[$current_log_index]) && $logs[$current_log_index]->completed_date->day == $i)
                                                 @php
                                                     $current_log_index++;
