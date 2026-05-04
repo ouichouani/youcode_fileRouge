@@ -27,8 +27,6 @@
 
             @foreach ($months as $month)
                 @php
-                    $monthStart = $month->copy()->startOfMonth();
-                    $monthEnd = $month->copy()->endOfMonth();
                     $daysInMonth = $month->daysInMonth;
                 @endphp
 
@@ -40,7 +38,7 @@
                         </p>
                     </div>
 
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto [&::-webkit-scrollbar]:h-[1px] [&::-webkit-scrollbar-thumb]:bg-blue-500">
                         <div class="flex justify-center items-center min-w-max">
 
                             <table class="border border-solid border-white/30 rounded-4xl">
@@ -64,8 +62,9 @@
                                 <tbody>
                                     @foreach ($habits as $h)
                                         @php
-                                            $logs = $h->logs;
-                                            $current_log_index = 0;
+                                            $logs = collect($h->logs)->keyBy(
+                                                fn($item) => $item->completed_date->toDateString(),
+                                            );
                                         @endphp
 
                                         <tr>
@@ -77,20 +76,22 @@
 
                                             @for ($i = 1; $i <= $daysInMonth; $i++)
                                                 @php
-                                                    $now = now();
-                                                    $index_date = new DateTime("$i-$month->month-$month->year");
-                                                    $index_date = \Carbon\Carbon::parse($index_date);
 
-                                                    $day = $index_date->format('l');
+                                                    $index_date = \Carbon\Carbon::create(
+                                                        $month->year,
+                                                        $month->month,
+                                                        $i,
+                                                    );
+
+                                                    $day = $index_date->toDateString();
+                                                    $is_scheduled = in_array( $index_date->format('l') , $h->frequency);
                                                     $lastLog = $logs->last();
 
                                                 @endphp
 
-                                                @if (now()->month > $month->month && in_array($day, $h->frequency) && $h->created_at->toDateString() <= $index_date->toDateString())
-                                                    @if (isset($logs[$current_log_index]) && $logs[$current_log_index]->completed_date->day == $i)
-                                                        @php
-                                                            $current_log_index++;
-                                                        @endphp
+                                                @if (now()->format('m-y') > $month->format('m-y') && $is_scheduled && $h->created_at->toDateString() <= $day)
+
+                                                    @if ( isset($logs[$day]) && $logs[$day]->completed_date->toDateString() == $day)
                                                         <td
                                                             class="border border-solid border-white/50 min-w-[25px] text-center bg-green-800">
                                                             <img src="{{ asset('svg/ok.svg') }}" class="w-[15px] m-auto"
@@ -103,11 +104,8 @@
                                                                 alt="">
                                                         </td>
                                                     @endif
-                                                @elseif (now()->day > $i && in_array($day, $h->frequency) && $h->created_at->toDateString() <= $index_date->toDateString())
-                                                    @if (isset($logs[$current_log_index]) && $logs[$current_log_index]->completed_date->day == $i)
-                                                        @php
-                                                            $current_log_index++;
-                                                        @endphp
+                                                @elseif (now()->toDateString() > $index_date->toDateString() && $is_scheduled && $h->created_at->toDateString() <= $day)
+                                                    @if (isset($logs[$day]) && $logs[$day]->completed_date->toDateString() == $day)
                                                         <td
                                                             class="border border-solid border-white/50 min-w-[25px] text-center bg-green-800">
                                                             <img src="{{ asset('svg/ok.svg') }}" class="w-[15px] m-auto"
@@ -120,8 +118,8 @@
                                                                 alt="">
                                                         </td>
                                                     @endif
-                                                @elseif (now()->day == $i && in_array($day, $h?->frequency) && $h->created_at->toDateString() <= $index_date->toDateString())
-                                                    @if ($lastLog?->completed_date->day != $i)
+                                                @elseif (now()->toDateString() == $index_date->toDateString() && $is_scheduled && $h->created_at->toDateString() <= $day)
+                                                    @if ($lastLog?->completed_date->toDateString() != $day)
                                                         <td
                                                             class="border border-solid border-white/50 min-w-[25px] text-center bg-red-800">
                                                             <img src="{{ asset('svg/x.svg') }}" class="w-[15px] m-auto"

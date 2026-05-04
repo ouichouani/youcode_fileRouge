@@ -48,7 +48,7 @@
                                                         $score < -100 => 'Failed Experiment 🧪',
                                                         // 😵 very low
                                                         $score < -75 => 'Slime 🟢',
-                                                        $score < -50 => 'bug 🪲',
+                                                        $score < -50 => 'baby 🍼',
                                                         $score < -25 => 'Potato 🥔',
                                                         $score < 0 => 'Rat 🐀',
                                                         // 🐣 beginner fail zone
