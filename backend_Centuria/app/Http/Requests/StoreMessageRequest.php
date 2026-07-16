@@ -24,7 +24,19 @@ class StoreMessageRequest extends FormRequest
     {
         return [
             'message' => ['required', 'string' , 'max:2000'],
-            'receiver_id' => ['required', 'exists:users,id'],
+            'receiver_id' => ['nullable', 'exists:users,id'],
+            'group_id' => ['nullable', 'exists:groups,id'],
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->has('receiver_id') && $this->has('group_id')) {
+                $validator->errors()->add('receiver_id', 'You cannot provide both receiver_id and group_id.');
+            }else if (!$this->has('receiver_id') && !$this->has('group_id')) {
+                $validator->errors()->add('receiver_id', 'You must provide either receiver_id or group_id.');
+            }
+        });
     }
 }
