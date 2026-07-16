@@ -33,7 +33,7 @@ export default function Header() {
                     </div>
 
                     {(Array.isArray(nav) && nav?.length > 0) &&
-                    <div className="pl-2">
+                    <div className="min-w-full flex item-center justify-center">
                         <Nav />
                     </div>
                     }

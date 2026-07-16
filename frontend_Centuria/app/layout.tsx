@@ -1,6 +1,7 @@
 import "./globals.css";
 import AppProvider  from "@/context/AppContext.jsx";
 import NavProvider  from "@/context/NavContext.jsx";
+import NotificationProvider  from "@/context/NotificationContext.jsx";
 
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
@@ -11,7 +12,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
       <AppProvider>
         <NavProvider>
+        <NotificationProvider>
         {children}
+        </NotificationProvider>
         </NavProvider>
       </AppProvider>
       

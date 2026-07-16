@@ -41,18 +41,18 @@ export default function FollowersPage() {
 
                             <div className="flex justify-between items-center ">
 
-                                <div className="flex items-start gap-4">
+                                <Link href={`/main/community/network/users/${f.sender?.id}`} className="flex items-center gap-4">
                                     <img src={f.sender?.image?.url || '/images/blank-profile.webp'}
                                         alt={f.sender?.name ?? 'undefind'}
                                         className={`h-13 w-13 rounded-full border border-white/20 bg-[#0d1117] object-cover`} />
 
                                     <div>
-                                        <Link href={`/main/requests/followers/${f.id}`}>
+                                        {/* <Link href={`/main/requests/followers/${f.id}`}> */}
                                             <p className=" text-md font-semibold text-white">{f?.sender.name ?? 'undefined'}</p>
                                             <p className="mt-1 text-xs  text-[#9198a1]">{f?.sender.email ?? 'undefined'}</p>
-                                        </Link>
+                                        {/* </Link> */}
                                     </div>
-                                </div>
+                                        </Link>
 
                                 <div className="flex flex-wrap gap-3" title='remove this follower'>
                                     <DeleteFriendRequestButton id={f.id} setFriendRequests={setFollowers}  />

@@ -37,30 +37,30 @@ export default function FollowingPage() {
             <div className="flex flex-col gap-2">
                 {following?.length ?
                     following.map((f) =>
-                        <article key={f.id} className={`rounded-2xl border border-white/10 bg-[#151b23] p-2 md:p-4 shadow-lg transition
-                         ${(f.status == 'accepted' || f.status == 'rejected') && "opacity-40 hover:opacity-100"}`} >
+                        <article key={f.id} className={`rounded-2xl border border-white/10 bg-[#151b23] p-2  shadow-lg transition`} >
 
 
 
-                            <div className="flex justify-between items-center ">
+                            <div className="flex justify-between items-center">
 
-                                <div className="flex items-start gap-4">
+                                <Link href={`/main/community/network/users/${f.receiver?.id}`} className="flex items-center gap-4">
                                     <img src={f.receiver?.image?.url || '/images/blank-profile.webp'}
                                         alt={f.receiver?.name ?? 'undefind'}
                                         className={`h-13 w-13 rounded-full border border-white/20 bg-[#0d1117] object-cover`} />
 
                                     <div>
-                                        <Link href={`/main/requests/following/${f.id}`}>
+                                        <div>
+                                            
                                             <p className=" text-md font-semibold text-white">{f?.receiver.name ?? 'undefined'}</p>
                                             <p className="mt-1 text-xs  text-[#9198a1]">{f?.receiver.email ?? 'undefined'}</p>
-                                        </Link>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </Link>
 
 
                             <div className="flex flex-wrap gap-3" title='remove this follower'>
                                 <DeleteFriendRequestButton id={f.id} setFriendRequests={setFollowing} />
+                            </div>
                             </div>
 
                         </article>
