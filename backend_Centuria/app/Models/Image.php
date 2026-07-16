@@ -18,20 +18,22 @@ class Image extends Model
     static function store($model, string $folder, $image)
     {
 
-        // if the model is a user
-        if (!$model instanceof User) throw new \InvalidArgumentException('store() expects a User model.');
+        // IF THE MODEL IS A USER AVATARE
+        // IF THE MODEL IS A GROUP AVATARE
+        if (!$model instanceof User && !$model instanceof Group) throw new \InvalidArgumentException('store() expects a User or Group model.');
 
         if ($model->image) {
             Storage::disk('public')->delete($model->image->path);
             $model->image()->delete();
         }
 
-        // $path = $image->store($folder, 'public');
+        
         $path = null;
 
         if ($image instanceof \Illuminate\Http\UploadedFile) {
             $path = $image->store($folder, 'public');
         } else {
+            // IF THE MODEL IS A USER
             // TO SUPPORT GOOGLE AVATARS, WE NEED TO DOWNLOAD THE IMAGE AND STORE IT LOCALLY
             $path = $folder . '/' . Str::uuid() . '.jpg';
             Storage::disk('public')->put($path, $image);
