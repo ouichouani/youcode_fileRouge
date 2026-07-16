@@ -97,10 +97,28 @@ class UserController extends Controller
 
     public function index()
     {
-        $this->authorize('index', User::class);
+        $user = Auth::id();
+
+        // $this->authorize('index', User::class);
         $users = User::with('image')
             ->where('is_banned', false)
             ->where('is_banned_by_moderator', false)
+            ->with(['sentRequests' => function ($query) use ($user) {
+                $query->where('status', 'pending')
+                ->where('receiver_id' , $user) ;
+            }, 'receivedRequests' => function ($query) use ($user) {
+                $query->where('status', 'pending')
+                ->where('sender_id' , $user) ;
+            }])
+            ->select('users.*')
+            ->selectRaw("EXISTS 
+            (SELECT 1 FROM friend_requests 
+                WHERE (
+                    (sender_id = ? AND  receiver_id = users.id)
+                    OR
+                    (receiver_id =  ? AND sender_id = users.id)
+                )
+                AND status = 'accepted') as is_friend ", [$user, $user])
             ->orderBy('email');
 
         $like = request()->query('like');
@@ -120,13 +138,12 @@ class UserController extends Controller
         $user->load([
             'posts' => function ($q) use ($user) {
 
-                if ($user->id != Auth::user()->id) {
+                if ($user->id != Auth::id()) {
                     $q->where('visibility', 'public');
                     if ($user->is_frend_with(Auth::user())) $q->orWhere('visibility', 'friends');
                 }
                 $q->latest();
             },
-            'posts.comments',
             'posts.comments.user.image:path,imageable_id',
             'posts.likes',
             'posts.video',
@@ -184,7 +201,7 @@ class UserController extends Controller
         $isFriend = true;
 
         // add a imojy based on the score 
-        $user->score = $user->score . ' ' . $this->getRank($user->score)  ;
+        $user->score = $user->score . ' ' . $this->getRank($user->score);
 
         return response()->json([
             'user' => $user->load('image:path,imageable_id'),
@@ -222,7 +239,7 @@ class UserController extends Controller
         $receivedRequests = $data['receivedRequests'];
 
         // add a imojy based on the score 
-        $user->score = $user->score . ' ' . $this->getRank($user->score)  ;
+        $user->score = $user->score . ' ' . $this->getRank($user->score);
 
         return response()->json([
             'user' => $user->load('image:path,imageable_id'),
@@ -273,6 +290,14 @@ class UserController extends Controller
         Image::deleteOne($user);
         $user->delete();
         return response()->json(['success' => 'User deleted successfully.']);
+    }
+
+    public function ping()
+    {
+        $user = Auth::user();
+        $user->last_seen_at = now();
+        $user->save();
+        return response()->json(['success' => 'Ping received.']);
     }
 
     function getRank($score)

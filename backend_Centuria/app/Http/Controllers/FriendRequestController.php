@@ -12,6 +12,7 @@ class FriendRequestController extends Controller
 
     public function index()
     {
+        // GET ALL FRIEND REQUESTS FOR THE AUTHENTICATED USER
         $friendRequests = FriendRequest::Where('receiver_id', Auth::id())->with(['sender', 'sender.image'])->get();
         return response()->json(['friendRequests' => $friendRequests]);
     }
@@ -42,13 +43,20 @@ class FriendRequestController extends Controller
         return response()->json(['following' => $following]);
     }
 
+    public function allFriends()
+    {
+        $user = Auth::user() ;
+        $friends = FriendRequest::allFriends($user) ;
+        return response()->json(['friends' => $friends]);
+    }
+
 
     public function store(StoreFriendRequestRequest $request)
     {
         $data = $request->validated();
         $data['sender_id'] = Auth::id();
-        FriendRequest::create($data);
-        return response()->json(['data' => $data]);
+        $friendRequest = FriendRequest::create($data);
+        return response()->json(['friendRequest' => $friendRequest]);
     }
 
 
