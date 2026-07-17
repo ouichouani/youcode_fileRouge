@@ -25,10 +25,11 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'bio',
+        'last_seen_at' ,
         'role',
-        'score' ,
-        'social_id' ,
-        'social_type' ,
+        'score',
+        'social_id',
+        'social_type',
 
     ];
 
@@ -121,7 +122,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     // used for social login
-    
+
     public function oauth()
     {
         return $this->hasMany(Oauth::class);
@@ -129,8 +130,25 @@ class User extends Authenticatable implements JWTSubject
 
     // video relationship
 
-    
-    public function videos(){
-        return $this->hasMany(Video::class) ;
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
+    // group relationship 
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'groups_users', 'user_id', 'group_id');
+    }
+
+    public function ownedGroups()
+    {
+        return $this->hasMany(Group::class, 'owner_id');
+    }
+
+    public function conversations()
+    {
+        return Conversation::where('user1_id' , $this->id)->orWhere('user2_id' , $this->id) ;
     }
 }

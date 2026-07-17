@@ -1,13 +1,21 @@
 "use client";
 import { createContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import getEcho from "@/lib/echo";
 
 export const AppContext = createContext({});
 
 export default function AppProvider({ children }) {
 
-  const domain = 'http://localhost:80/api';
+  const domain = process.env.NEXT_PUBLIC_API_DOMAIN ;
 
+  // currentConversation USED TO KNOW THE CURRENT CONVERSATION
+  const [currentDiscussion, setCurrentDiscussion] = useState({ discussion : null, user: null });
+
+  // LIST OF ONLINE USERS USED IN CHALLIST IN DMS PAGE
+  const [onlineUsers, setOnlineUsers] = useState({});
+
+  // THE AUTH USER
   const [globalUser, setGlobalUser] = useState({});
 
   // avoid the error server : ReferenceError: localStorage is not defined
@@ -32,10 +40,10 @@ export default function AppProvider({ children }) {
   const [toastNotification, setToastNotification] = useState([]);
 
   // INSERT AN OBJECT IN THE TOAST STATE . IT NEES A MESSAGE
-  function notify(message , color = 'green', duration = 3000) {
+  function notify(message, color = 'green', duration = 3000) {
 
     const id = new Date().getTime();
-    setToastNotification(prev => ([...prev, { removing: false, id: id, message : message , color : color }]));
+    setToastNotification(prev => ([...prev, { removing: false, id: id, message: message, color: color }]));
 
     setTimeout(() => {
 
@@ -77,14 +85,70 @@ export default function AppProvider({ children }) {
     default: pagetitle = 'Centuria'; break
   }
 
+  useEffect(() => {
+
+    // UPDATE THE LAST SEEN EVERY 30S FOR THE AUTH USER
+    const interval = setInterval(async () => {
+      await fetch(`${domain}/users/ping`, {
+        method: "POST",
+        credentials: "include",
+      });
+    }, 30000); // every 30 seconds
+
+
+    const echo = getEcho();
+    const ONLINE_CHANNEL = echo.join(`online-users`);
+
+    ONLINE_CHANNEL.subscribed(() => {
+      // INDECATOR OF JOINING
+      console.log('YOU ARE ONLINE ...  ');
+
+    }).here(users => {
+      // GET ONLINE USERS INTO THE STATE 
+      const currentOnlineUsers = {};
+      users.forEach(item => { currentOnlineUsers[item.id] = item });
+      setOnlineUsers(prev => ({ ...prev, ...currentOnlineUsers }));
+
+    }).joining(user => {
+      // ADD THE JOINED USER TO THE STATE 
+      setOnlineUsers(prev => ({ ...prev, [user.id]: user }));
+
+    }).leaving((leavingUser) => {
+      // REMOVE THE USER FROM THE STATE
+      setOnlineUsers(prev => {
+        const updated = { ...prev };
+        delete updated[leavingUser.id];
+        return updated;
+      })
+
+    }).error((error) => {
+      // SHOW IF ANY ERROR IN THIS CHANNEL
+      console.log("ONLINE USERS CHANNEL ERROR:", error);
+
+    });
+
+    return () => {
+      clearInterval(interval);
+      echo.leave(`online-users`);
+    }
+
+  }, []);
+
+
   const sharedValues = {
     user: globalUser,
     setUser: setUser,
-    domain: domain,
+
     pathname: pathname,
     pagetitle: pagetitle,
+
     toastNotification: toastNotification,
-    notify : notify 
+    notify: notify,
+
+    currentDiscussion: currentDiscussion,
+    setCurrentDiscussion: setCurrentDiscussion,
+
+    onlineUsers: onlineUsers,
   }
 
   return (

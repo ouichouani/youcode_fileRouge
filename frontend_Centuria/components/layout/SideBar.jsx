@@ -21,7 +21,7 @@ export default function SideBar() {
         <>
             <aside
                 data-sidebar
-                className="sticky inset-y-0 left-0 z-200 w-[60px] min-w-[60px] bg-[#151b23] pt-40 text-white shadow-2xl border-white/30 border-solid transition-transform duration-200">
+                className="sticky inset-y-0 left-0 z-10 w-[60px] min-w-[60px] bg-[#151b23] pt-40 text-white shadow-2xl border-white/30 border-solid transition-transform duration-200">
 
 
                 <div className="w-full h-full relative" >

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Group;
 use App\Models\User;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -26,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Relation::enforceMorphMap([
             "User" => User::class ,
-            "Post" => Post::class
+            "Post" => Post::class ,
+            "Group" => Group::class ,
         ]) ;
 
 

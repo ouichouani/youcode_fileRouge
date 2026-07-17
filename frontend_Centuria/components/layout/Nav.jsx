@@ -26,7 +26,7 @@ export default function Nav() {
 
     return (
 
-        <nav className="relative bg-[#151b23] py-3 group w-[60px] pl-[10px] min-w-fit flex flex-col gap-1 transition-all duration-300 rounded-lg">
+        <nav className="relative bg-[#151b23] py-3 group max-w-[60px] bg-yel low-500 p-[7px] min-w-fit flex flex-col gap-1 transition-all duration-300 rounded-lg">
             <div className="absolute top-[-20px] right-[40px] rotate-90 opacity-100 group-hover:opacity-100 group-hover:right-[60px] duration-500 transition-all " style={BORDERDIVSTYLE}></div>
 
             {Array.isArray(nav) && nav?.map((item, key) =>

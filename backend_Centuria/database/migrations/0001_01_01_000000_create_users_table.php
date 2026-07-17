@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('role' , ['Admin' , 'Client' , 'Moderator'])->default('Client');
             $table->integer('score')->default(0);
             $table->string('bio')->nullable();
+            $table->timestamp('last_seen_at')->nullable();
             
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
