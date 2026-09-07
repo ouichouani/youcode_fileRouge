@@ -49,7 +49,7 @@ export default function ReportsPage() {
                 </div>
             </div>
 
-            <section className="mx-auto w-full max-w-6xl">
+            <section className="mx-auto w-full flex justify-center max-w-6xl">
 
                 <div className="flex flex-col gap-6">
                     {posts?.length ?

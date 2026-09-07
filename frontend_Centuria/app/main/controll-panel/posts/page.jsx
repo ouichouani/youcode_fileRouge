@@ -43,7 +43,7 @@ export default function hidderPosts() {
 
 
     return (
-        <section className="mx-auto w-full max-w-6xl">
+        <section className="mx-auto w-full max-w-6xl flex item-center justify-center pt-10">
 
             {/* {pathname.includes("main/controll-panel") &&
                 <div className="mb-6 rounded-2xl border border-white/10 bg-[#151b23] px-6 py-5 shadow-lg">

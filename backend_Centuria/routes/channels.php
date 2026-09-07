@@ -21,19 +21,6 @@ Broadcast::channel('groups.{group}', function ($user, $group) {
     return true;
 });
 
-// CHANNEL THAT GET ALL INTERACTIONS IN THE CHAL LIST LIKE
-// NEW RECIEVED MESSAGE
-// ONLINE AND OFLINE USERS
-
-// Broadcast::channel('discussions.{user}', function ($user) {
-//     $conversation1 = Conversation::where('user1_id', Auth::id())->pluck('user2_id')->toArray();
-//     $conversation2 = Conversation::where('user2_id', Auth::id())->pluck('user1_id')->toArray();
-//     $conversation = array_merge($conversation1, $conversation2);
-//     if(in_array($user->id, $conversation)) return $user ;
-//     return false;
-// });
-
-
 
 // CHANNEL THAT GET ALL ONLINE USERS IN THE SYSTEM
 Broadcast::channel('online-users' , function($user){

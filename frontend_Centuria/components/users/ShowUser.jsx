@@ -45,6 +45,7 @@ export default function ShowUser({ user_id }) {
         setIsFriend(data?.isFriend ?? true);
     }
 
+
     async function contact() {
         const response = await fetch(`${domain}/conversations`, {
             credentials: "include",
@@ -228,7 +229,7 @@ export default function ShowUser({ user_id }) {
                             </button>
                         }
 
-                        {(user.role == 'Admin' && user?.id != authUser?.id && user?.role == 'Client') &&
+                        {(authUser.role == 'Admin' && user?.id != authUser?.id && user?.role == 'Client') &&
                             <button onClick={banUser}
                                 className="rounded-lg border border-red-400/30 bg-red-500/10 px-5 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/20 cursor-pointer">
                                 {authUser?.is_banned || authUser?.is_banned_by_moderator ? 'unban' : 'ban'}
@@ -236,7 +237,7 @@ export default function ShowUser({ user_id }) {
                         }
 
                         {/* after testing , change the conditions and use one button to ban / unban */}
-                        {(user.role == 'Moderator' && user?.id != authUser?.id && user?.role == 'Client') &&
+                        {(authUser.role == 'Moderator' && user?.id != authUser?.id && user?.role == 'Client') &&
                             <button onClick={banUser}
                                 className="rounded-lg border border-red-400/30 bg-red-500/10 px-5 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/20 cursor-pointer">
                                 {authUser?.is_banned_by_moderator ? 'unban' : 'temp ban'}

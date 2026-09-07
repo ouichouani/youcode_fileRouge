@@ -2,6 +2,7 @@
 
 import { useRouter } from  "next/navigation";
 import { AppContext } from '@/context/AppContext.jsx'
+import { useContext } from "react";
 
 
 export default function DeleteHabit({ id }) {
